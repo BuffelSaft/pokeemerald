@@ -420,26 +420,18 @@ static s32 GetParentToInheritNature(struct DayCare *daycare)
 {
     u32 species[DAYCARE_MON_COUNT];
     s32 i;
-    s32 dittoCount;
+    s32 everstoneCount = 0;
     s32 parent = -1;
 
-    // search for female gender
+    // search for Everstone
     for (i = 0; i < DAYCARE_MON_COUNT; i++)
     {
-        if (GetBoxMonGender(&daycare->mons[i].mon) == MON_FEMALE)
-            parent = i;
+        if (GetBoxMonData(&daycare->mons[i].mon, MON_DATA_HELD_ITEM == ITEM_EVERSTONE))
+            everstoneCount++, parent = i;
     }
 
-    // search for ditto
-    for (dittoCount = 0, i = 0; i < DAYCARE_MON_COUNT; i++)
-    {
-        species[i] = GetBoxMonData(&daycare->mons[i].mon, MON_DATA_SPECIES);
-        if (species[i] == SPECIES_DITTO)
-            dittoCount++, parent = i;
-    }
-
-    // coin flip on ...two Dittos
-    if (dittoCount == DAYCARE_MON_COUNT)
+    // If both parents have an Everstone, choose one at random
+    if (everstoneCount == DAYCARE_MON_COUNT)
     {
         if (Random() >= USHRT_MAX / 2)
             parent = 0;
@@ -674,7 +666,8 @@ static void BuildEggMoveset(struct Pokemon *egg, struct BoxPokemon *father, stru
             break;
         }
     }
-    for (i = 0; i < MAX_MON_MOVES; i++)
+    // Remove TM inheritance
+/*     for (i = 0; i < MAX_MON_MOVES; i++)
     {
         if (sHatchedEggFatherMoves[i] != MOVE_NONE)
         {
@@ -687,7 +680,7 @@ static void BuildEggMoveset(struct Pokemon *egg, struct BoxPokemon *father, stru
                 }
             }
         }
-    }
+    } */
     for (i = 0; i < MAX_MON_MOVES; i++)
     {
         if (sHatchedEggFatherMoves[i] == MOVE_NONE)
@@ -729,19 +722,69 @@ void RejectEggFromDayCare(void)
 static void AlterEggSpeciesWithIncenseItem(u16 *species, struct DayCare *daycare)
 {
     u16 motherItem, fatherItem;
-    if (*species == SPECIES_WYNAUT || *species == SPECIES_AZURILL)
+
+    motherItem = GetBoxMonData(&daycare->mons[0].mon, MON_DATA_HELD_ITEM);
+    fatherItem = GetBoxMonData(&daycare->mons[1].mon, MON_DATA_HELD_ITEM);
+
+    // Yuck, surely there's a better way to do this?
+    switch (*species)
     {
-        motherItem = GetBoxMonData(&daycare->mons[0].mon, MON_DATA_HELD_ITEM);
-        fatherItem = GetBoxMonData(&daycare->mons[1].mon, MON_DATA_HELD_ITEM);
-        if (*species == SPECIES_WYNAUT && motherItem != ITEM_LAX_INCENSE && fatherItem != ITEM_LAX_INCENSE)
+    case SPECIES_WYNAUT:
+        if (motherItem != ITEM_LAX_INCENSE && fatherItem != ITEM_LAX_INCENSE)
         {
             *species = SPECIES_WOBBUFFET;
         }
-
-        if (*species == SPECIES_AZURILL && motherItem != ITEM_SEA_INCENSE && fatherItem != ITEM_SEA_INCENSE)
+        break;
+    case SPECIES_AZURILL:
+        if (motherItem != ITEM_SEA_INCENSE && fatherItem != ITEM_SEA_INCENSE)
         {
             *species = SPECIES_MARILL;
         }
+        break;
+    case SPECIES_MUNCHLAX:
+        if (motherItem != ITEM_FULL_INCENSE && fatherItem != ITEM_FULL_INCENSE)
+        {
+            *species = SPECIES_SNORLAX;
+        }
+        break;
+    case SPECIES_HAPPINY:
+        if (motherItem != ITEM_LUCK_INCENSE && fatherItem != ITEM_LUCK_INCENSE)
+        {
+            *species = SPECIES_CHANSEY;
+        }
+        break;
+    case SPECIES_MIMEJR:
+        if (motherItem != ITEM_ODD_INCENSE && fatherItem != ITEM_ODD_INCENSE)
+        {
+            *species = SPECIES_MR_MIME;
+        }
+        break;
+    case SPECIES_CHINGLING:
+        if (motherItem != ITEM_PURE_INCENSE && fatherItem != ITEM_PURE_INCENSE)
+        {
+            *species = SPECIES_CHIMECHO;
+        }
+        break;
+    case SPECIES_BONSLY:
+        if (motherItem != ITEM_ROCK_INCENSE && fatherItem != ITEM_ROCK_INCENSE)
+        {
+            *species = SPECIES_SUDOWOODO;
+        }
+        break;
+    case SPECIES_BUDEW:
+        if (motherItem != ITEM_ROSE_INCENSE && fatherItem != ITEM_ROSE_INCENSE)
+        {
+            *species = SPECIES_ROSELIA;
+        }
+        break;
+    case SPECIES_MANTYKE:
+        if (motherItem != ITEM_WAVE_INCENSE && fatherItem != ITEM_WAVE_INCENSE)
+        {
+            *species = SPECIES_MANTINE;
+        }
+        break;         
+    default:
+        break;
     }
 }
 
