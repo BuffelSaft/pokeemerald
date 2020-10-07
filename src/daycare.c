@@ -418,7 +418,6 @@ static u16 GetEggSpecies(u16 species)
 
 static s32 GetParentToInheritNature(struct DayCare *daycare)
 {
-    u32 species[DAYCARE_MON_COUNT];
     s32 i;
     s32 everstoneCount = 0;
     s32 parent = -1;
@@ -426,7 +425,7 @@ static s32 GetParentToInheritNature(struct DayCare *daycare)
     // search for Everstone
     for (i = 0; i < DAYCARE_MON_COUNT; i++)
     {
-        if (GetBoxMonData(&daycare->mons[i].mon, MON_DATA_HELD_ITEM == ITEM_EVERSTONE))
+        if (GetBoxMonData(&daycare->mons[i].mon, MON_DATA_HELD_ITEM) == ITEM_EVERSTONE)
             everstoneCount++, parent = i;
     }
 
@@ -440,13 +439,54 @@ static s32 GetParentToInheritNature(struct DayCare *daycare)
     }
 
     // Don't inherit nature if not holding Everstone
-    if (GetBoxMonData(&daycare->mons[parent].mon, MON_DATA_HELD_ITEM) != ITEM_EVERSTONE
-        || Random() >= USHRT_MAX / 2)
+    if (GetBoxMonData(&daycare->mons[parent].mon, MON_DATA_HELD_ITEM) != ITEM_EVERSTONE)
     {
         return -1;
     }
 
     return parent;
+}
+
+static void TryInheritAbility(struct Pokemon *egg, struct DayCare *daycare)
+{
+    s32 i;
+    s32 parent = -1;
+    u8 femaleCount, abilitySlot = 0;
+
+    // search for female
+    for (i = 0; i < DAYCARE_MON_COUNT; i++)
+    {
+        if (GetBoxMonGender(&daycare->mons[i].mon) == MON_FEMALE)
+            femaleCount++, parent = i;
+    }
+
+    // No female, parents must be Ditto and a male or genderless mon
+    if (femaleCount == 0)
+    {
+        // Search for Ditto, set other mon to be parent
+        if (GetBoxMonData(&daycare->mons[0].mon, MON_DATA_SPECIES, NULL) == SPECIES_DITTO)
+            parent = 1;
+        else
+            parent = 0;
+    }
+
+    // Check if parent has Hidden Ability
+    if ((GetBoxMonData(&daycare->mons[parent].mon, MON_DATA_ABILITY_NUM, NULL) == 2))
+    {
+        if (Random() % 10 < 6) // 60% chance to inherit parent's HA
+            abilitySlot = 2;
+        else
+            abilitySlot = Random() % 2;
+    }
+    else
+    {
+        if ((femaleCount != 0) && (Random() % 10 < 8)) // 80% chance to inherit mother's ability
+            abilitySlot = GetBoxMonData(&daycare->mons[parent].mon, MON_DATA_ABILITY_NUM, NULL);
+        else
+            abilitySlot = Random() % 2;
+    }
+
+    SetMonData(egg, MON_DATA_ABILITY_NUM, &abilitySlot);
 }
 
 static void _TriggerPendingDaycareEgg(struct DayCare *daycare)
@@ -853,6 +893,7 @@ static void _GiveEggFromDaycare(struct DayCare *daycare)
     AlterEggSpeciesWithIncenseItem(&species, daycare);
     SetInitialEggData(&egg, species, daycare);
     InheritIVs(&egg, daycare);
+    TryInheritAbility(&egg, daycare);
     BuildEggMoveset(&egg, &daycare->mons[parentSlots[1]].mon, &daycare->mons[parentSlots[0]].mon);
 
     if (species == SPECIES_PICHU)
