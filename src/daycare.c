@@ -685,8 +685,21 @@ static void BuildEggMoveset(struct Pokemon *egg, struct BoxPokemon *father, stru
         sHatchedEggMotherMoves[i] = GetBoxMonData(mother, MON_DATA_MOVE1 + i);
     }
 
+    // Get level up moves shared by both parents first
+    for (i = 0; i < MAX_MON_MOVES; i++)
+    {
+        if (sHatchedEggFatherMoves[i] == MOVE_NONE)
+            break;
+        for (j = 0; j < MAX_MON_MOVES; j++)
+        {
+            if (sHatchedEggFatherMoves[i] == sHatchedEggMotherMoves[j] && sHatchedEggFatherMoves[i] != MOVE_NONE)
+                sHatchedEggFinalMoves[numSharedParentMoves++] = sHatchedEggFatherMoves[i];
+        }
+    }
+
     numEggMoves = GetEggMoves(egg, sHatchedEggEggMoves);
 
+    // Get egg moves from father. Egg moves from father may overwite level up moves
     for (i = 0; i < MAX_MON_MOVES; i++)
     {
         if (sHatchedEggFatherMoves[i] != MOVE_NONE)
@@ -706,6 +719,28 @@ static void BuildEggMoveset(struct Pokemon *egg, struct BoxPokemon *father, stru
             break;
         }
     }
+
+    // Get egg moves from mother. Egg moves from mother may overwite egg moves from father
+    for (i = 0; i < MAX_MON_MOVES; i++)
+    {
+        if (sHatchedEggMotherMoves[i] != MOVE_NONE)
+        {
+            for (j = 0; j < numEggMoves; j++)
+            {
+                if (sHatchedEggMotherMoves[i] == sHatchedEggEggMoves[j])
+                {
+                    if (GiveMoveToMon(egg, sHatchedEggMotherMoves[i]) == MON_HAS_MAX_MOVES)
+                        DeleteFirstMoveAndGiveMoveToMon(egg, sHatchedEggMotherMoves[i]);
+                    break;
+                }
+            }
+        }
+        else
+        {
+            break;
+        }
+    }
+
     // Remove TM inheritance
 /*     for (i = 0; i < MAX_MON_MOVES; i++)
     {
@@ -721,16 +756,6 @@ static void BuildEggMoveset(struct Pokemon *egg, struct BoxPokemon *father, stru
             }
         }
     } */
-    for (i = 0; i < MAX_MON_MOVES; i++)
-    {
-        if (sHatchedEggFatherMoves[i] == MOVE_NONE)
-            break;
-        for (j = 0; j < MAX_MON_MOVES; j++)
-        {
-            if (sHatchedEggFatherMoves[i] == sHatchedEggMotherMoves[j] && sHatchedEggFatherMoves[i] != MOVE_NONE)
-                sHatchedEggFinalMoves[numSharedParentMoves++] = sHatchedEggFatherMoves[i];
-        }
-    }
 
     for (i = 0; i < MAX_MON_MOVES; i++)
     {
