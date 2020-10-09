@@ -5531,7 +5531,7 @@ bool8 DoesRotomKnowSpecialMove (void)
 void SetSpeciesAndEggMove (void)
 {
     u8 numEggSpecies, randSpecies, randEggMove;
-    u16 eggMoves[][4] = {
+    static const u16 eggMoves[][4] = {
         {SPECIES_BAGON, MOVE_DRAGON_DANCE, MOVE_DRAGON_RUSH, MOVE_THRASH},
         {SPECIES_ESPURR, MOVE_TRICK, MOVE_YAWN, MOVE_ASSIST},
         {SPECIES_SNEASEL, MOVE_FAKE_OUT, MOVE_ICICLE_CRASH, MOVE_BITE},
