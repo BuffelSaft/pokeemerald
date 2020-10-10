@@ -8,6 +8,7 @@
 #include "event_data.h"
 #include "random.h"
 #include "main.h"
+#include "pokemon.h"
 #include "egg_hatch.h"
 #include "text.h"
 #include "menu.h"
@@ -919,7 +920,7 @@ static void InheritPokeBall(struct Pokemon *egg, struct DayCare *daycare)
     {
         ball = ITEM_POKE_BALL;
     }
-    
+
     SetMonData(egg, MON_DATA_POKEBALL, &ball);
 }
 
@@ -1052,6 +1053,12 @@ static u16 DetermineEggSpeciesAndParentSlots(struct DayCare *daycare, u8 *parent
         u8 ditto = parentSlots[1];
         parentSlots[1] = parentSlots[0];
         parentSlots[0] = ditto;
+    }
+
+    // Rotom can only breed with Ditto, and should hatch in its base form
+    if (gSpeciesToNationalPokedexNum[species[parentSlots[1]] - 1] == SPECIES_ROTOM)
+    {
+        eggSpecies = SPECIES_ROTOM;
     }
 
     return eggSpecies;
