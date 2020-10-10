@@ -30,6 +30,7 @@ static void SetInitialEggData(struct Pokemon *mon, u16 species, struct DayCare *
 static u8 GetDaycareCompatibilityScore(struct DayCare *daycare);
 static void DaycarePrintMonInfo(u8 windowId, s32 daycareSlotId, u8 y);
 static void TransferEggMoves (struct DayCare *daycare);
+static bool8 DoMonsShareEggGroup(struct DayCare *daycare);
 
 // RAM buffers used to assist with BuildEggMoveset()
 EWRAM_DATA static u16 sHatchedEggLevelUpMoves[EGG_LVL_UP_MOVES_ARRAY_COUNT] = {0};
@@ -280,7 +281,11 @@ static u16 TakeSelectedPokemonFromDaycare(struct DaycareMon *daycareMon)
 static u16 TakeSelectedPokemonMonFromDaycareShiftSlots(struct DayCare *daycare, u8 slotId)
 {
     u16 species;
-    TransferEggMoves(daycare);
+    if (DoMonsShareEggGroup(daycare))
+    {
+        TransferEggMoves(daycare);
+    }
+
     species = TakeSelectedPokemonFromDaycare(&daycare->mons[slotId]);
     ShiftDaycareSlots(daycare);
     return species;
@@ -1216,6 +1221,27 @@ static bool8 EggGroupsOverlap(u16 *eggGroups1, u16 *eggGroups2)
     }
 
     return FALSE;
+}
+
+// Checks if the two Pokemon in the daycare are in the same egg group
+static bool8 DoMonsShareEggGroup(struct DayCare *daycare)
+{
+    u8 i;
+    u16 eggGroups[DAYCARE_MON_COUNT][EGG_GROUPS_PER_MON];
+    u16 species[DAYCARE_MON_COUNT];
+
+    for (i = 0; i < DAYCARE_MON_COUNT; i++)
+    {
+        species[i] = GetBoxMonData(&daycare->mons[i].mon, MON_DATA_SPECIES);
+        eggGroups[i][0] = gBaseStats[species[i]].eggGroup1;
+        eggGroups[i][1] = gBaseStats[species[i]].eggGroup2;
+    }
+
+    if (EggGroupsOverlap(eggGroups[0], eggGroups[1]))
+    {
+        return TRUE;
+    }
+    return FALSE;        
 }
 
 static u8 GetDaycareCompatibilityScore(struct DayCare *daycare)
