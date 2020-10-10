@@ -256,13 +256,13 @@ static u16 TakeSelectedPokemonFromDaycare(struct DaycareMon *daycareMon)
     GetBoxMonNickname(&daycareMon->mon, gStringVar1);
     species = GetBoxMonData(&daycareMon->mon, MON_DATA_SPECIES);
     BoxMonToMon(&daycareMon->mon, &pokemon);
-
+/* 
     if (GetMonData(&pokemon, MON_DATA_LEVEL) != MAX_LEVEL)
     {
         experience = GetMonData(&pokemon, MON_DATA_EXP) + daycareMon->steps;
         SetMonData(&pokemon, MON_DATA_EXP, &experience);
-        // ApplyDaycareExperience(&pokemon);
-    }
+        ApplyDaycareExperience(&pokemon);
+    } */
 
     gPlayerParty[PARTY_SIZE - 1] = pokemon;
     if (daycareMon->mail.message.itemId)
@@ -325,11 +325,11 @@ static u8 GetNumLevelsGainedForDaycareMon(struct DaycareMon *daycareMon)
 
 static u32 GetDaycareCostForSelectedMon(struct DaycareMon *daycareMon)
 {
-    u32 cost;
+    u32 cost = DAYCARE_PRICE;
 
-    u8 numLevelsGained = GetNumLevelsGainedFromSteps(daycareMon);
+    // u8 numLevelsGained = GetNumLevelsGainedFromSteps(daycareMon);
     GetBoxMonNickname(&daycareMon->mon, gStringVar1);
-    cost = 100 + 100 * numLevelsGained;
+    // cost = 100 + 100 * numLevelsGained;
     ConvertIntToDecimalStringN(gStringVar2, cost, STR_CONV_MODE_LEFT_ALIGN, 5);
     return cost;
 }
@@ -1448,7 +1448,8 @@ static void DaycarePrintMonLvl(struct DayCare *daycare, u8 windowId, u32 daycare
     u8 intText[8];
 
     StringCopy(lvlText, gText_Lv);
-    level = GetLevelAfterDaycareSteps(&daycare->mons[daycareSlotId].mon, daycare->mons[daycareSlotId].steps);
+    level = GetLevelFromBoxMonExp(&daycare->mons[daycareSlotId].mon);
+    // level = GetLevelAfterDaycareSteps(&daycare->mons[daycareSlotId].mon, daycare->mons[daycareSlotId].steps);
     ConvertIntToDecimalStringN(intText, level, STR_CONV_MODE_LEFT_ALIGN, 3);
     StringAppend(lvlText, intText);
     x = GetStringRightAlignXOffset(1, lvlText, 112);

@@ -170,7 +170,7 @@ Route117_PokemonDayCare_EventScript_DisplayLevelsGained:: @ 8291E1E
 Route117_PokemonDayCare_EventScript_OneMonInDaycare:: @ 8291E2F
 	msgbox Route117_PokemonDayCare_Text_GoodToSeeYou, MSGBOX_DEFAULT
 	setvar VAR_0x8004, 0
-	call Route117_PokemonDayCare_EventScript_DisplayLevelsGained
+	@ call Route117_PokemonDayCare_EventScript_DisplayLevelsGained
 	msgbox Route117_PokemonDayCare_Text_WeCanRaiseOneMore, MSGBOX_YESNO
 	compare VAR_RESULT, YES
 	goto_if_eq Route117_PokemonDayCare_EventScript_GiveMonToRaise
@@ -263,16 +263,12 @@ Route117_PokemonDayCare_Movement_RetrieveDaycareMon: @ 8291F47
 	walk_slow_down
 	step_end
 
-@ Unused. Possibly a commented script, or a typo end added to the above Movement script
-Route117_PokemonDayCare_EventScript_UnusedEnd:: @ 8291F5B
-	end
-
 Route117_PokemonDayCare_EventScript_TwoMonsInDaycare:: @ 8291F5C
 	msgbox Route117_PokemonDayCare_Text_GoodToSeeYou, MSGBOX_DEFAULT
 	setvar VAR_0x8004, 0
-	call Route117_PokemonDayCare_EventScript_DisplayLevelsGained
+	@ call Route117_PokemonDayCare_EventScript_DisplayLevelsGained
 	setvar VAR_0x8004, 1
-	call Route117_PokemonDayCare_EventScript_DisplayLevelsGained
+	@ call Route117_PokemonDayCare_EventScript_DisplayLevelsGained
 	msgbox Route117_PokemonDayCare_Text_TakeYourMonBack, MSGBOX_YESNO
 	compare VAR_RESULT, YES
 	goto_if_eq Route117_PokemonDayCare_EventScript_TryRetrieveMon
@@ -302,7 +298,7 @@ EventScript_EggHatch:: @ 8291FC0
 	end
 
 Route117_Text_SeeWifeIfYoudLikeMeToRaiseMon: @ 8291FCF
-	.string "I'm the DAY-CARE MAN.\p"
+	.string "I'm the Day-Care Man.\p"
 	.string "I help take care of the precious\n"
 	.string "Pokémon of Trainers.\p"
 	.string "If you'd like me to raise your Pokémon,\n"
@@ -331,7 +327,7 @@ Route117_Text_YouHaveNoRoomForIt: @ 829216A
 
 Route117_Text_ReceivedEgg: @ 82921A4
 	.string "{PLAYER} received the Egg from\n"
-	.string "the DAY-CARE MAN.$"
+	.string "the Day-Care Man.$"
 
 Route117_Text_TakeGoodCareOfIt: @ 82921CF
 	.string "Take good care of it.$"
@@ -341,7 +337,7 @@ Route117_Text_FriendlyWithOtherTrainersMon: @ 82921E5
 	.string "it seemed to be friendly with\l"
 	.string "{STR_VAR_2}'s {STR_VAR_3}.\p"
 	.string "I may even have seen it receiving\n"
-	.string "a piece of MAIL.$"
+	.string "a piece of Mail.$"
 
 @ Unused
 Route117_Text_SeeWifeIfYouWantToPickUpMon: @ 829225A
@@ -357,7 +353,7 @@ Route117_Text_IWillKeepDoYouWantIt: @ 82922C6
 	.string "You do want this, yes?$"
 
 Route117_PokemonDayCare_Text_WouldYouLikeUsToRaiseAMon: @ 82922F4
-	.string "I'm the DAY-CARE LADY.\p"
+	.string "I'm the Day-Care Lady.\p"
 	.string "We can raise Pokémon for you.\p"
 	.string "Would you like us to raise one?$"
 
@@ -418,7 +414,7 @@ Route117_PokemonDayCare_Text_HeresYourMon: @ 8292575
 
 Route117_PokemonDayCare_Text_TookBackMon: @ 8292593
 	.string "{PLAYER} took back {STR_VAR_1} from\n"
-	.string "the DAY-CARE LADY.$"
+	.string "the Day-Care Lady.$"
 
 Route117_PokemonDayCare_Text_YouHaveJustOneMon: @ 82925BB
 	.string "Oh? But you have just one\n"
