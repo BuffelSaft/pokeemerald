@@ -531,22 +531,9 @@ static void _TriggerPendingDaycareEgg(struct DayCare *daycare)
     FlagSet(FLAG_PENDING_DAYCARE_EGG);
 }
 
-// Functionally unused
-static void _TriggerPendingDaycareMaleEgg(struct DayCare *daycare)
-{
-    daycare->offspringPersonality = (Random()) | (EGG_GENDER_MALE);
-    FlagSet(FLAG_PENDING_DAYCARE_EGG);
-}
-
 void TriggerPendingDaycareEgg(void)
 {
     _TriggerPendingDaycareEgg(&gSaveBlock1Ptr->daycare);
-}
-
-// Unused
-static void TriggerPendingDaycareMaleEgg(void)
-{
-    _TriggerPendingDaycareMaleEgg(&gSaveBlock1Ptr->daycare);
 }
 
 // Removes the selected index from the given IV list and shifts the remaining
@@ -572,11 +559,29 @@ static void RemoveIVIndexFromList(u8 *ivs, u8 selectedIv)
 
 static void InheritIVs(struct Pokemon *egg, struct DayCare *daycare)
 {
-    u8 i;
-    u8 selectedIvs[INHERITED_IV_COUNT];
+    u8 i, iv, numIvsToInherit;
+    u8 destinyKnotCount = 0;
+    u8 selectedIvs[DESTINY_KNOT_IV_COUNT];
     u8 availableIVs[NUM_STATS];
-    u8 whichParents[INHERITED_IV_COUNT];
-    u8 iv;
+    u8 whichParents[DESTINY_KNOT_IV_COUNT];
+
+    // search for Destiny Knot
+    for (i = 0; i < DAYCARE_MON_COUNT; i++)
+    {
+        if (GetBoxMonData(&daycare->mons[i].mon, MON_DATA_HELD_ITEM) == ITEM_DESTINY_KNOT)
+            destinyKnotCount++;
+    }
+
+    // Inherit more IVs if a parent is holding a Destiny Knot
+    if (destinyKnotCount > 0)
+    {
+        numIvsToInherit = DESTINY_KNOT_IV_COUNT;
+    }
+    else
+    {
+        numIvsToInherit = INHERITED_IV_COUNT;
+    }
+    
 
     // Initialize a list of IV indices.
     for (i = 0; i < NUM_STATS; i++)
@@ -584,8 +589,8 @@ static void InheritIVs(struct Pokemon *egg, struct DayCare *daycare)
         availableIVs[i] = i;
     }
 
-    // Select the 3 IVs that will be inherited.
-    for (i = 0; i < INHERITED_IV_COUNT; i++)
+    // Select the IVs that will be inherited.
+    for (i = 0; i < numIvsToInherit; i++)
     {
         // Randomly pick an IV from the available list and stop from being chosen again.
         selectedIvs[i] = availableIVs[Random() % (NUM_STATS - i)];
@@ -593,13 +598,13 @@ static void InheritIVs(struct Pokemon *egg, struct DayCare *daycare)
     }
 
     // Determine which parent each of the selected IVs should inherit from.
-    for (i = 0; i < INHERITED_IV_COUNT; i++)
+    for (i = 0; i < numIvsToInherit; i++)
     {
         whichParents[i] = Random() % DAYCARE_MON_COUNT;
     }
 
     // Set each of inherited IVs on the egg mon.
-    for (i = 0; i < INHERITED_IV_COUNT; i++)
+    for (i = 0; i < numIvsToInherit; i++)
     {
         switch (selectedIvs[i])
         {
