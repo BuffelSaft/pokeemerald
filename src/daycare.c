@@ -882,6 +882,47 @@ static void BuildEggMoveset(struct Pokemon *egg, struct BoxPokemon *father, stru
     }
 }
 
+static void InheritPokeBall(struct Pokemon *egg, struct DayCare *daycare)
+{
+    u16 ball;
+    u8 parent, i;
+    u8 femaleCount, abilitySlot = 0;
+
+    // search for female
+    for (i = 0; i < DAYCARE_MON_COUNT; i++)
+    {
+        if (GetBoxMonGender(&daycare->mons[i].mon) == MON_FEMALE)
+            femaleCount++, parent = i;
+    }
+
+    // No female, parents must be Ditto and a male or genderless mon
+    if (femaleCount == 0)
+    {
+        // Search for Ditto, set other mon to be parent
+        if (GetBoxMonData(&daycare->mons[0].mon, MON_DATA_SPECIES, NULL) == SPECIES_DITTO)
+            parent = 1;
+        else
+            parent = 0;
+    }
+    // If mons are the same species, choose ball randomly from either parent
+    if (GetBoxMonData(&daycare->mons[0].mon, MON_DATA_SPECIES, NULL) == GetBoxMonData(&daycare->mons[1].mon, MON_DATA_SPECIES, NULL))
+    {
+        if (Random() >= USHRT_MAX / 2)
+            parent = 0;
+        else
+            parent = 1;
+    }
+    
+    ball = GetBoxMonData(&daycare->mons[parent].mon, MON_DATA_POKEBALL, NULL);
+    // Don't pass down certain balls
+    if (ball == ITEM_MASTER_BALL || ball == ITEM_CHERISH_BALL)
+    {
+        ball = ITEM_POKE_BALL;
+    }
+    
+    SetMonData(egg, MON_DATA_POKEBALL, &ball);
+}
+
 static void RemoveEggFromDayCare(struct DayCare *daycare)
 {
     daycare->offspringPersonality = 0;
@@ -1028,6 +1069,7 @@ static void _GiveEggFromDaycare(struct DayCare *daycare)
     SetInitialEggData(&egg, species, daycare);
     InheritIVs(&egg, daycare);
     TryInheritAbility(&egg, daycare);
+    InheritPokeBall(&egg, daycare);
     BuildEggMoveset(&egg, &daycare->mons[parentSlots[1]].mon, &daycare->mons[parentSlots[0]].mon);
 
     if (species == SPECIES_PICHU)

@@ -296,7 +296,7 @@ static const s16 sEggShardVelocities[][2] =
 static void CreateHatchedMon(struct Pokemon *egg, struct Pokemon *temp)
 {
     u16 species;
-    u32 personality, pokerus;
+    u32 personality, pokerus, ball;
     u8 i, friendship, language, gameMet, markings, obedience, ability;
     u16 moves[MAX_MON_MOVES];
     u32 ivs[NUM_STATS];
@@ -322,6 +322,7 @@ static void CreateHatchedMon(struct Pokemon *egg, struct Pokemon *temp)
     pokerus = GetMonData(egg, MON_DATA_POKERUS);
     obedience = GetMonData(egg, MON_DATA_OBEDIENCE);
     ability = GetMonData(egg, MON_DATA_ABILITY_NUM);
+    ball = GetMonData(egg, MON_DATA_POKEBALL);
 
     CreateMon(temp, species, EGG_HATCH_LEVEL, 32, TRUE, personality, OT_ID_PLAYER_ID, 0);
 
@@ -339,6 +340,7 @@ static void CreateHatchedMon(struct Pokemon *egg, struct Pokemon *temp)
     SetMonData(temp, MON_DATA_LANGUAGE, &language);
     SetMonData(temp, MON_DATA_MET_GAME, &gameMet);
     SetMonData(temp, MON_DATA_MARKINGS, &markings);
+    SetMonData(temp, MON_DATA_POKEBALL, &ball);
 
     friendship = 120;
     SetMonData(temp, MON_DATA_FRIENDSHIP, &friendship);
@@ -371,9 +373,6 @@ static void AddHatchedMonToParty(u8 id)
     GetSetPokedexFlag(pokeNum, FLAG_SET_CAUGHT);
 
     GetMonNickname2(mon, gStringVar1);
-
-    ball = ITEM_POKE_BALL;
-    SetMonData(mon, MON_DATA_POKEBALL, &ball);
 
     caughtLvl = 0;
     SetMonData(mon, MON_DATA_MET_LEVEL, &caughtLvl);
