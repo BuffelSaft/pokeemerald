@@ -29,6 +29,7 @@ static void ClearDaycareMonMail(struct DayCareMail *mail);
 static void SetInitialEggData(struct Pokemon *mon, u16 species, struct DayCare *daycare);
 static u8 GetDaycareCompatibilityScore(struct DayCare *daycare);
 static void DaycarePrintMonInfo(u8 windowId, s32 daycareSlotId, u8 y);
+static void TransferEggMoves (struct DayCare *daycare);
 
 // RAM buffers used to assist with BuildEggMoveset()
 EWRAM_DATA static u16 sHatchedEggLevelUpMoves[EGG_LVL_UP_MOVES_ARRAY_COUNT] = {0};
@@ -259,7 +260,7 @@ static u16 TakeSelectedPokemonFromDaycare(struct DaycareMon *daycareMon)
     {
         experience = GetMonData(&pokemon, MON_DATA_EXP) + daycareMon->steps;
         SetMonData(&pokemon, MON_DATA_EXP, &experience);
-        ApplyDaycareExperience(&pokemon);
+        // ApplyDaycareExperience(&pokemon);
     }
 
     gPlayerParty[PARTY_SIZE - 1] = pokemon;
@@ -278,7 +279,9 @@ static u16 TakeSelectedPokemonFromDaycare(struct DaycareMon *daycareMon)
 
 static u16 TakeSelectedPokemonMonFromDaycareShiftSlots(struct DayCare *daycare, u8 slotId)
 {
-    u16 species = TakeSelectedPokemonFromDaycare(&daycare->mons[slotId]);
+    u16 species;
+    TransferEggMoves(daycare);
+    species = TakeSelectedPokemonFromDaycare(&daycare->mons[slotId]);
     ShiftDaycareSlots(daycare);
     return species;
 }
@@ -657,6 +660,102 @@ static u8 GetEggMoves(struct Pokemon *pokemon, u16 *eggMoves)
     }
 
     return numEggMoves;
+}
+
+static u8 GetBoxMonEggMoves(struct BoxPokemon *boxMon, u16 *eggMoves)
+{
+    u16 eggMoveIdx;
+    u16 numEggMoves;
+    u16 species;
+    u16 i;
+
+    numEggMoves = 0;
+    eggMoveIdx = 0;
+    species = GetBoxMonData(boxMon, MON_DATA_SPECIES);
+    for (i = 0; i < ARRAY_COUNT(gEggMoves) - 1; i++)
+    {
+        if (gEggMoves[i] == species + EGG_MOVES_SPECIES_OFFSET)
+        {
+            eggMoveIdx = i + 1;
+            break;
+        }
+    }
+
+    for (i = 0; i < EGG_MOVES_ARRAY_COUNT; i++)
+    {
+        if (gEggMoves[eggMoveIdx + i] > EGG_MOVES_SPECIES_OFFSET)
+        {
+            break;
+        }
+
+        eggMoves[i] = gEggMoves[eggMoveIdx + i];
+        numEggMoves++;
+    }
+
+    return numEggMoves;
+}
+
+static void TransferEggMoves (struct DayCare *daycare)
+{
+    u16 numEggMoves0, numEggMoves1;
+    u16 i, j;
+
+    for (i = 0; i < MAX_MON_MOVES; i++)
+    {
+        sHatchedEggMotherMoves[i] = MOVE_NONE; 
+        sHatchedEggFatherMoves[i] = MOVE_NONE;
+    }
+    for (i = 0; i < EGG_MOVES_ARRAY_COUNT; i++)
+        sHatchedEggEggMoves[i] = MOVE_NONE;
+
+    for (i = 0; i < MAX_MON_MOVES; i++)
+    {
+        sHatchedEggFatherMoves[i] = GetBoxMonData(&daycare->mons[0].mon, MON_DATA_MOVE1 + i); // Treat father as slot 0
+        sHatchedEggMotherMoves[i] = GetBoxMonData(&daycare->mons[1].mon, MON_DATA_MOVE1 + i); // Treat mother as slot 1
+    }
+
+    numEggMoves0 = GetBoxMonEggMoves(&daycare->mons[0].mon, sHatchedEggEggMoves);
+    numEggMoves1 = GetBoxMonEggMoves(&daycare->mons[1].mon, sHatchedEggEggMoves);
+
+    // Get egg moves from slot 0 mon ("father"), give to slot 1 mon if it has space
+    for (i = 0; i < MAX_MON_MOVES; i++)
+    {
+        if (sHatchedEggFatherMoves[i] != MOVE_NONE)
+        {
+            for (j = 0; j < numEggMoves1; j++)
+            {
+                if (sHatchedEggFatherMoves[i] == sHatchedEggEggMoves[j])
+                {
+                    GiveMoveToBoxMon(&daycare->mons[1].mon, sHatchedEggFatherMoves[i]);
+                    break;
+                }
+            }
+        }
+        else
+        {
+            break;
+        }
+    }
+
+    // Get egg moves from slot 1 mon ("mother"), give to slot 0 mon if it has space
+    for (i = 0; i < MAX_MON_MOVES; i++)
+    {
+        if (sHatchedEggMotherMoves[i] != MOVE_NONE)
+        {
+            for (j = 0; j < numEggMoves0; j++)
+            {
+                if (sHatchedEggMotherMoves[i] == sHatchedEggEggMoves[j])
+                {
+                    GiveMoveToBoxMon(&daycare->mons[0].mon, sHatchedEggMotherMoves[i]);
+                    break;
+                }
+            }
+        }
+        else
+        {
+            break;
+        }
+    }
 }
 
 static void BuildEggMoveset(struct Pokemon *egg, struct BoxPokemon *father, struct BoxPokemon *mother)
