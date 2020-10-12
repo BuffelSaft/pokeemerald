@@ -152,8 +152,8 @@ RustboroCity_DevonCorp_3F_Movement_PlayerApproachDesk: @ 8212566
 RustboroCity_DevonCorp_3F_EventScript_MrStone:: @ 821256C
 	lock
 	faceplayer
-	goto_if_set FLAG_RECEIVED_EXP_SHARE, RustboroCity_DevonCorp_3F_EventScript_MrStoneAfterFavor
-	goto_if_set FLAG_DELIVERED_STEVEN_LETTER, RustboroCity_DevonCorp_3F_EventScript_GiveExpShare
+	goto_if_set FLAG_RECEIVED_SCOPE_LENS, RustboroCity_DevonCorp_3F_EventScript_MrStoneAfterFavor
+	goto_if_set FLAG_DELIVERED_STEVEN_LETTER, RustboroCity_DevonCorp_3F_EventScript_GiveScopeLens
 	msgbox RustboroCity_DevonCorp_3F_Text_CountingOnYou, MSGBOX_DEFAULT
 	closemessage
 	applymovement VAR_LAST_TALKED, Common_Movement_FaceOriginalDirection
@@ -161,13 +161,13 @@ RustboroCity_DevonCorp_3F_EventScript_MrStone:: @ 821256C
 	release
 	end
 
-RustboroCity_DevonCorp_3F_EventScript_GiveExpShare:: @ 8212595
+RustboroCity_DevonCorp_3F_EventScript_GiveScopeLens:: @ 8212595
 	msgbox RustboroCity_DevonCorp_3F_Text_ThankYouForDeliveringLetter, MSGBOX_DEFAULT
-	giveitem ITEM_EXP_SHARE
+	giveitem ITEM_SCOPE_LENS
 	compare VAR_RESULT, FALSE
 	goto_if_eq Common_EventScript_ShowBagIsFull
-	setflag FLAG_RECEIVED_EXP_SHARE
-	msgbox RustboroCity_DevonCorp_3F_Text_ExplainExpShare, MSGBOX_DEFAULT
+	setflag FLAG_RECEIVED_SCOPE_LENS
+	msgbox RustboroCity_DevonCorp_3F_Text_ExplainScopeLens, MSGBOX_DEFAULT
 	closemessage
 	applymovement VAR_LAST_TALKED, Common_Movement_FaceOriginalDirection
 	waitmovement 0
@@ -185,7 +185,7 @@ RustboroCity_DevonCorp_3F_EventScript_MrStoneAfterFavor:: @ 82125CC
 RustboroCity_DevonCorp_3F_EventScript_Employee:: @ 82125E1
 	lock
 	faceplayer
-	goto_if_set FLAG_RECEIVED_REPEAT_BALL, RustboroCity_DevonCorp_3F_EventScript_EmployeeBalls
+	goto_if_set FLAG_RECEIVED_AGGRONITE, RustboroCity_DevonCorp_3F_EventScript_EmployeeBalls
 	msgbox RustboroCity_DevonCorp_3F_Text_VisitCaptSternShipyard, MSGBOX_DEFAULT
 	release
 	end
@@ -212,7 +212,7 @@ RustboroCity_DevonCorp_3F_Text_MrStoneIHaveFavor: @ 8212609
 	.string "Well, on the way, could you stop off in\n"
 	.string "Dewford Town?\p"
 	.string "I was hoping that you'd deliver a\n"
-	.string "LETTER to Steven in Dewford.$"
+	.string "Letter to Steven in Dewford.$"
 
 RustboroCity_DevonCorp_3F_Text_MrStoneWantYouToHaveThis: @ 821277C
 	.string "Mr. Stone: Now, you should know that\n"
@@ -252,14 +252,13 @@ RustboroCity_DevonCorp_3F_Text_ThankYouForDeliveringLetter: @ 8212A29
 	.string "This is my way of thanking you.\n"
 	.string "It should help you, a Trainer.$"
 
-RustboroCity_DevonCorp_3F_Text_ExplainExpShare: @ 8212A9E
+RustboroCity_DevonCorp_3F_Text_ExplainScopeLens: @ 8212A9E
 	.string "Mr. Stone: A Pokémon holding that\n"
-	.string "Exp. Share will be given some of the\l"
-	.string "Exp Points from battle.\p"
-	.string "It will get EXP Points even if it didn't\n"
-	.string "actually battle.\p"
-	.string "I would say Exp. Share is quite useful\n"
-	.string "for raising weak Pokémon.$"
+	.string "Scope Lens will be more likely to land\l"
+	.string "a critical hit than usual.\p"
+	.string "If combined with the move Focus Energy,\n"
+	.string "the holder's attacks will always turn\l"
+	.string "critical!$"
 
 RustboroCity_DevonCorp_3F_Text_NotFamiliarWithTrends: @ 8212B78
 	.string "Mr. Stone: Since my youth, I've immersed\n"
@@ -300,7 +299,7 @@ RustboroCity_DevonCorp_3F_Text_VisitCaptSternShipyard: @ 8212E41
 	.string "you should go see Capt. Stern.$"
 
 RustboroCity_DevonCorp_3F_Text_RepeatAndTimerHugelyPopular: @ 8212E88
-	.string "Devon's new products, the REPEAT BALL\n"
+	.string "Devon's new products, the Repeat Ball\n"
 	.string "and Timer Ball, have become hugely\l"
 	.string "popular among Trainers.$"
 

@@ -54,17 +54,17 @@ Route116_EventScript_BoyfriendGruntInTunnel:: @ 81F2C98
 Route116_EventScript_DevonEmployee:: @ 81F2CA2
 	lock
 	faceplayer
-	goto_if_set FLAG_MET_DEVON_EMPLOYEE, Route116_EventScript_TryGiveRepeatBallAgain
+	goto_if_set FLAG_MET_DEVON_EMPLOYEE, Route116_EventScript_TryGiveAggroniteAgain
 	msgbox Route116_Text_ThankYouTokenOfAppreciation, MSGBOX_DEFAULT
-	goto Route116_EventScript_GiveRepeatBall
+	goto Route116_EventScript_GiveAggronite
 	end
 
-Route116_EventScript_GiveRepeatBall:: @ 81F2CBB
+Route116_EventScript_GiveAggronite:: @ 81F2CBB
 	setflag FLAG_MET_DEVON_EMPLOYEE
-	giveitem ITEM_REPEAT_BALL
+	giveitem ITEM_AGGRONITE
 	compare VAR_RESULT, FALSE
-	goto_if_eq Route116_EventScript_NoRoomForRepeatBall
-	msgbox Route116_Text_NewBallAvailableAtMart, MSGBOX_DEFAULT
+	goto_if_eq Route116_EventScript_NoRoomForAggronite
+	msgbox Route116_Text_AlsoNeedKeystone, MSGBOX_DEFAULT
 	closemessage
 	compare VAR_FACING, DIR_NORTH
 	call_if_eq Route116_EventScript_DevonEmployeeExit
@@ -76,7 +76,7 @@ Route116_EventScript_GiveRepeatBall:: @ 81F2CBB
 	call_if_eq Route116_EventScript_DevonEmployeeExitEast
 	removeobject VAR_LAST_TALKED
 	clearflag FLAG_HIDE_RUSTBORO_CITY_DEVON_CORP_3F_EMPLOYEE
-	setflag FLAG_RECEIVED_REPEAT_BALL
+	setflag FLAG_RECEIVED_AGGRONITE
 	release
 	end
 
@@ -90,12 +90,12 @@ Route116_EventScript_DevonEmployeeExitEast:: @ 81F2D20
 	waitmovement 0
 	return
 
-Route116_EventScript_TryGiveRepeatBallAgain:: @ 81F2D2B
+Route116_EventScript_TryGiveAggroniteAgain:: @ 81F2D2B
 	msgbox Route116_Text_TokenOfAppreciation, MSGBOX_DEFAULT
-	goto Route116_EventScript_GiveRepeatBall
+	goto Route116_EventScript_GiveAggronite
 	end
 
-Route116_EventScript_NoRoomForRepeatBall:: @ 81F2D39
+Route116_EventScript_NoRoomForAggronite:: @ 81F2D39
 	msgbox Route116_Text_BagIsJamPacked, MSGBOX_DEFAULT
 	release
 	end
@@ -416,27 +416,27 @@ Route116_Text_ThankYouTokenOfAppreciation: @ 81F3317
 	.string "shower you with gratitude and hail\l"
 	.string "you as a hero!\p"
 	.string "For you, the most wonderful Trainer,\n"
-	.string "I bear good news!\p"
-	.string "Recently, our company developed\n"
-	.string "a new kind of Poké Ball.\p"
+	.string "I bear a gift!\p"
+	.string "This stone will allow Aggron to\n"
+	.string "Mega Evolve in battle.\p"
 	.string "As a token of our appreciation, this\n"
 	.string "is our gift to our wonderful Trainer!$"
 
-Route116_Text_NewBallAvailableAtMart: @ 81F3521
-	.string "Our new Poké Ball will be available\n"
-	.string "at the Pokémon Mart in Rustboro.\p"
+Route116_Text_AlsoNeedKeystone: @ 81F3521
+	.string "You'll also need a Keystone to use\n"
+	.string "it, but I bet you already knew that!\p"
 	.string "Please do try it out!\n"
 	.string "Thank you and bye-bye!$"
 
 Route116_Text_BagIsJamPacked: @ 81F3593
 	.string "Your Bag is jam-packed.\n"
-	.string "I can't give you this REPEAT BALL.$"
+	.string "I can't give you this Aggronite.$"
 
 Route116_Text_TokenOfAppreciation: @ 81F35CE
 	.string "As a token of our appreciation for\n"
 	.string "your delivering our package, I have\l"
-	.string "a gift of a new kind of Poké Ball\l"
-	.string "for our most wonderful Trainer!$"
+	.string "a gift of a Mega Stone for our most\l"
+	.string "wonderful Trainer!$"
 
 Route116_Text_CanYouHelpMeFindGlasses: @ 81F3657
 	.string "I dropped my glasses…\n"
@@ -491,4 +491,3 @@ Route116_Text_TrainerTipsBagHasPockets: @ 81F38D4
 	.string "placed in the appropriate Pockets.\p"
 	.string "No Trainer can afford to be without\n"
 	.string "a Bag of their own.$"
-

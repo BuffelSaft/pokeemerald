@@ -158,7 +158,7 @@ SlateportCity_Pokemart_EnergyGuru: @ 81DCDD4
 	release
 	end
 
-SlateportCity_EventScript_PowerItems:: @ 81DCDBD
+SlateportCity_EventScript_PowerItems::
 	lock
 	faceplayer
 	message SlateportCity_Text_PowerItemsSellWhatYouNeed
@@ -175,6 +175,30 @@ SlateportCity_Pokemart_PowerItems:
 	.2byte ITEM_POWER_BAND
 	.2byte ITEM_POWER_ANKLET
 	.2byte ITEM_POWER_WEIGHT
+	.2byte ITEM_NONE
+	release
+	end
+
+SlateportCity_EventScript_IncenseStand::
+	lock
+	faceplayer
+	message SlateportCity_Text_IncenseStand
+	waitmessage
+	pokemart SlateportCity_Pokemart_Incense
+	msgbox gText_PleaseComeAgain, MSGBOX_DEFAULT
+	release
+	end
+
+SlateportCity_Pokemart_Incense:
+	.2byte ITEM_SEA_INCENSE
+	.2byte ITEM_LAX_INCENSE
+	.2byte ITEM_ROSE_INCENSE
+	.2byte ITEM_PURE_INCENSE
+	.2byte ITEM_ROCK_INCENSE
+	.2byte ITEM_ODD_INCENSE
+	.2byte ITEM_LUCK_INCENSE
+	.2byte ITEM_FULL_INCENSE
+	.2byte ITEM_WAVE_INCENSE
 	.2byte ITEM_NONE
 	release
 	end
@@ -993,8 +1017,13 @@ SlateportCity_Text_EnergyGuruSellWhatYouNeed: @ 81DD64A
 	.string "sell you what you need!$"
 
 SlateportCity_Text_PowerItemsSellWhatYouNeed:
-	.string "Need to boost your \n"
-	.string "sell you what you need!$"
+	.string "Need to boost your Pokémon's\n"
+	.string "training?\p"
+	.string "Give these a try!$"
+
+SlateportCity_Text_IncenseStand:
+	.string "Wouldn't you like some fragrant\n"
+	.string "incense?$"
 
 SlateportCity_Text_OhYourPokemon: @ 81DD68A
 	.string "Oh?\n"

@@ -298,7 +298,7 @@ const struct Item gItems[] =
     {
         .name = _("Quick Ball"),
         .itemId = ITEM_QUICK_BALL,
-        .price = 3000,
+        .price = 1000,
         .description = sQuickBallDesc,
         .pocket = POCKET_POKE_BALLS,
         .type = 11,
@@ -312,7 +312,7 @@ const struct Item gItems[] =
     {
         .name = _("Dusk Ball"),
         .itemId = ITEM_DUSK_BALL,
-        .price = 3000,
+        .price = 12000,
         .description = sDuskBallDesc,
         .pocket = POCKET_POKE_BALLS,
         .type = 11,
@@ -340,7 +340,7 @@ const struct Item gItems[] =
     {
         .name = _("Dream Ball"),
         .itemId = ITEM_DREAM_BALL,
-        .price = 5000,
+        .price = 3000,
         .description = sDreamBallDesc,
         .pocket = POCKET_POKE_BALLS,
         .type = 11,
@@ -3445,7 +3445,7 @@ const struct Item gItems[] =
     {
         .name = _("Power Bracer"),
         .itemId = ITEM_POWER_BRACER,
-        .price = 3000,
+        .price = 10000,
         .holdEffect = HOLD_EFFECT_EV_BOOST,
         .holdEffectParam = 8,
         .description = sPowerBracerDesc,
@@ -3459,7 +3459,7 @@ const struct Item gItems[] =
     {
         .name = _("Power Belt"),
         .itemId = ITEM_POWER_BELT,
-        .price = 3000,
+        .price = 10000,
         .holdEffect = HOLD_EFFECT_EV_BOOST,
         .holdEffectParam = 8,
         .description = sPowerBeltDesc,
@@ -3473,7 +3473,7 @@ const struct Item gItems[] =
     {
         .name = _("Power Lens"),
         .itemId = ITEM_POWER_LENS,
-        .price = 3000,
+        .price = 10000,
         .holdEffect = HOLD_EFFECT_EV_BOOST,
         .holdEffectParam = 8,
         .description = sPowerLensDesc,
@@ -3487,7 +3487,7 @@ const struct Item gItems[] =
     {
         .name = _("Power Band"),
         .itemId = ITEM_POWER_BAND,
-        .price = 3000,
+        .price = 10000,
         .holdEffect = HOLD_EFFECT_EV_BOOST,
         .holdEffectParam = 8,
         .description = sPowerBandDesc,
@@ -3501,7 +3501,7 @@ const struct Item gItems[] =
     {
         .name = _("Power Anklet"),
         .itemId = ITEM_POWER_ANKLET,
-        .price = 3000,
+        .price = 10000,
         .holdEffect = HOLD_EFFECT_EV_BOOST,
         .holdEffectParam = 8,
         .description = sPowerAnkletDesc,
@@ -3515,7 +3515,7 @@ const struct Item gItems[] =
     {
         .name = _("Power Weight"),
         .itemId = ITEM_POWER_WEIGHT,
-        .price = 3000,
+        .price = 10000,
         .holdEffect = HOLD_EFFECT_EV_BOOST,
         .holdEffectParam = 8,
         .description = sPowerWeightDesc,
