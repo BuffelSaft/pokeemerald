@@ -485,7 +485,7 @@ const struct TrainerMonSpread gSets[] = {
 
 	[SPREAD_HP_FIGHTING_TIMID] = {
 		.EVs = {
-			  0,	// HP
+			  4,	// HP
 			  0,	// Attack
 			  0,	// Defense
 			252,	// Speed
@@ -622,7 +622,7 @@ const struct TrainerMonSpread gSets[] = {
 	},
 	[SPREAD_FLANNERY_MIXED] = {
 		.EVs = {
-			  0,	// HP
+			  4,	// HP
 			252,	// Attack
 			  0,	// Defense
 			  0,	// Speed
@@ -641,7 +641,7 @@ const struct TrainerMonSpread gSets[] = {
 	},
 	[SPREAD_CHANSEY] = {
 		.EVs = {
-			  0,	// HP
+			  4,	// HP
 			  0,	// Attack
 			252,	// Defense
 			  0,	// Speed
@@ -658,4 +658,42 @@ const struct TrainerMonSpread gSets[] = {
 		},
 		.nature = NATURE_BOLD
 	},
+	[SPREAD_31_IV_ATK_SPEED_NAIVE]  = {
+		.EVs = {
+			  0,	// HP
+			252,	// Attack
+			  0,	// Defense
+			252,	// Speed
+			  4,	// Special Attack
+			  0		// Special Defense
+		},
+		.IVs = {
+			31,		// HP
+		  	31,		// Attack
+			31,		// Defense
+			31,		// Speed
+			31,		// Special Attack
+			31		// Special Defense
+		},
+		.nature = NATURE_NAIVE
+	},
+	[SPREAD_31_IV_HP_ATK_MIXED]  = {
+		.EVs = {
+			252,	// HP
+			252,	// Attack
+			  0,	// Defense
+			  0,	// Speed
+			  4,	// Special Attack
+			  0		// Special Defense
+		},
+		.IVs = {
+			31,		// HP
+		  	31,		// Attack
+			31,		// Defense
+			31,		// Speed
+			31,		// Special Attack
+			31		// Special Defense
+		},
+		.nature = NATURE_NAIVE
+	}
 };
