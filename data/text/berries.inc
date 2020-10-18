@@ -14,7 +14,7 @@ Route104_Text_TrainersOftenMakeMonHoldBerries: @ 82A6E32
 	.string "The way you look, you must be a\n"
 	.string "Trainer, no?\p"
 	.string "Trainers often make Pokémon hold\n"
-	.string "BERRIES.\p"
+	.string "Berries.\p"
 	.string "It's up to you whether to grow Berries\n"
 	.string "or use them.$"
 
@@ -27,7 +27,7 @@ Route111_Text_WateredPlantsEveryDayTakeBerry: @ 82A6EBD
 
 Route111_Text_GoingToTryToMakeDifferentColorBerries: @ 82A6F3D
 	.string "I'm going to try really hard and make\n"
-	.string "BERRIES in different colors.\p"
+	.string "Berries in different colors.\p"
 	.string "I hope you try hard, too!$"
 
 Route111_Text_WhatColorBerriesToLookForToday: @ 82A6F9A
@@ -35,12 +35,12 @@ Route111_Text_WhatColorBerriesToLookForToday: @ 82A6F9A
 	.string "for today?$"
 
 Route114_Text_LoveUsingBerryCrushShareBerry: @ 82A6FCB
-	.string "I love using the Berry CRUSH machine,\n"
+	.string "I love using the Berry Crush machine,\n"
 	.string "so I'm collecting Berries.\p"
 	.string "I'll share one with you, if you'd like.$"
 
 Route114_Text_TryBerryCrushWithFriends: @ 82A7034
-	.string "You should try the Berry CRUSH\n"
+	.string "You should try the Berry Crush\n"
 	.string "machine with your friends.$"
 
 Route114_Text_FunToThinkAboutBerries: @ 82A706E
@@ -49,7 +49,7 @@ Route114_Text_FunToThinkAboutBerries: @ 82A706E
 	.string "It's fun to think about.$"
 
 Route120_Text_BerriesExpressionOfLoveIsntIt: @ 82A70C7
-	.string "BERRIES grow by soaking up sunlight.\p"
+	.string "Berries grow by soaking up sunlight.\p"
 	.string "We help the Berries grow by watering\n"
 	.string "them regularly.\p"
 	.string "It's an expression of love, isn't it?$"
@@ -70,7 +70,7 @@ Route120_Text_BerryIsRareRaiseItWithCare: @ 82A71D5
 
 Route120_Text_IllGetMoreBerriesFromBerryMaster: @ 82A7217
 	.string "I'll get more Berries from\n"
-	.string "the Berry MASTER.$"
+	.string "the Berry Master.$"
 
 LilycoveCity_Text_BerrySuitsYou: @ 82A7244
 	.string "When it gets right down to it…\p"
@@ -89,7 +89,7 @@ LilycoveCity_Text_PokeblocksSuitPokemon: @ 82A7321
 	.string "{POKEBLOCK}S perfectly suit Pokémon.$"
 
 Route123_BerryMastersHouse_Text_YoureDeservingOfBerry: @ 82A7386
-	.string "You may call me the Berry MASTER.\p"
+	.string "You may call me the Berry Master.\p"
 	.string "I dream of filling the world with\n"
 	.string "beautiful flowers, so I raise Berries\l"
 	.string "and hand them out to everyone.\p"
@@ -141,17 +141,17 @@ Route104_PrettyPetalFlowerShop_Text_ThisIsPrettyPetalFlowerShop: @ 82A7686
 
 Route104_PrettyPetalFlowerShop_Text_LearnAboutBerries: @ 82A76D9
 	.string "{PLAYER}{KUN}, would you like to learn about\n"
-	.string "BERRIES?$"
+	.string "Berries?$"
 
 Route104_PrettyPetalFlowerShop_Text_IntroLearnAboutBerries: @ 82A7706
 	.string "Your name is?\p"
 	.string "{PLAYER}{KUN}.\n"
 	.string "That's a nice name.\p"
 	.string "{PLAYER}{KUN}, would you like to learn about\n"
-	.string "BERRIES?$"
+	.string "Berries?$"
 
 Route104_PrettyPetalFlowerShop_Text_BerriesExplanation: @ 82A775B
-	.string "BERRIES grow on trees that thrive\n"
+	.string "Berries grow on trees that thrive\n"
 	.string "only in soft, loamy soil.\p"
 	.string "If you take some Berries, be sure to\n"
 	.string "plant one in the loamy soil again.\p"

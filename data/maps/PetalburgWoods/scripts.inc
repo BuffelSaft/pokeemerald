@@ -427,7 +427,7 @@ PetalburgWoods_Text_IWantRematch2: @ 822E914
 	.string "I'm registering you in my PokéNav!$"
 
 PetalburgWoods_Text_MyPokemonHaveGrown: @ 822E966
-	.string "My BUG Pokémon have grown.\n"
+	.string "My Bug Pokémon have grown.\n"
 	.string "I'll be popular again.$"
 
 PetalburgWoods_Text_CantBePopularIfLose: @ 822E998

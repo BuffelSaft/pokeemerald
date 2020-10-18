@@ -2195,7 +2195,7 @@ Route116_Text_JoeyPostBattle: @ 829BBC6
 	.string "I've got another one!$"
 
 Route116_Text_JoseIntro: @ 829BBFD
-	.string "My BUG Pokémon are tough!\n"
+	.string "My Bug Pokémon are tough!\n"
 	.string "Let's battle!$"
 
 Route116_Text_JoseDefeat: @ 829BC25
@@ -2708,7 +2708,7 @@ Route119_Text_BrentPostBattle: @ 829D902
 
 Route119_Text_DonaldIntro: @ 829D941
 	.string "So, we finally meet!\n"
-	.string "My BUG Pokémon will keep you company!$"
+	.string "My Bug Pokémon will keep you company!$"
 
 Route119_Text_DonaldDefeat: @ 829D97C
 	.string "I wish we'd never met…$"
@@ -3370,7 +3370,7 @@ Route123_Text_VioletDefeat: @ 829FD53
 	.string "I smell the bitter scent of misery…$"
 
 Route123_Text_VioletPostBattle: @ 829FD7B
-	.string "The Berry MASTER's garden is filled\n"
+	.string "The Berry Master's garden is filled\n"
 	.string "with uplifting fragrances.$"
 
 Route123_Text_CameronIntro: @ 829FDBA
@@ -3504,7 +3504,7 @@ Route123_Text_FernandoPostRematch: @ 82A0487
 	.string "by my tune, you'd lose.$"
 
 Route123_Text_DavisIntro: @ 82A04C0
-	.string "This is my awesome BUG Pokémon!\n"
+	.string "This is my awesome Bug Pokémon!\n"
 	.string "My big brother got it for me.$"
 
 Route123_Text_DavisDefeat: @ 82A04FE
