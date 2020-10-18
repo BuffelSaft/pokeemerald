@@ -126,6 +126,7 @@ AI_CheckBadMove_CheckEffect: @ 82DC045
 	if_effect EFFECT_ROAR, AI_CBM_Roar
 	if_effect EFFECT_TOXIC, AI_CBM_Toxic
 	if_effect EFFECT_LIGHT_SCREEN, AI_CBM_LightScreen
+	if_effect EFFECT_AURORA_VEIL, AI_CBM_AuroraVeil
 	if_effect EFFECT_OHKO, AI_CBM_OneHitKO
 	if_effect EFFECT_SUPER_FANG, AI_CBM_HighRiskForDamage
 	if_effect EFFECT_MIST, AI_CBM_Mist
@@ -682,6 +683,12 @@ AI_CBM_LightScreen: @ 82DC4C5
 	if_side_affecting AI_USER, SIDE_STATUS_LIGHTSCREEN, Score_Minus8
 	end
 
+AI_CBM_AuroraVeil:
+	if_side_affecting AI_USER, SIDE_STATUS_AURORA_VEIL, Score_Minus30
+	get_weather
+	if_not_equal AI_WEATHER_HAIL, Score_Minus30
+	end
+
 AI_CBM_OneHitKO: @ 82DC4D0
 	if_type_effectiveness AI_EFFECTIVENESS_x0, Score_Minus10
 	get_ability AI_TARGET
@@ -1007,7 +1014,8 @@ AI_CV_DmgMove:
 	get_considered_move_power
 	if_equal 0, AI_Ret
 	get_how_powerful_move_is
-	if_equal MOVE_POWER_WEAK, Score_Minus1
+	if_equal MOVE_POWER_WEAK, Score_Minus5
+	if_equal MOVE_POWER_BEST, Score_Plus2
 	end
 	
 @ If move deals shit damage, and there are other mons to switch in, use support moves instead
@@ -1017,10 +1025,10 @@ AI_WeakDmg:
 	if_has_no_move_with_split AI_USER, SPLIT_STATUS, AI_Ret
 	get_curr_dmg_hp_percent
 	if_more_than 30, AI_Ret
-	if_more_than 20, Score_Minus1
+	@if_more_than 20, Score_Minus1
 	get_how_powerful_move_is
-	if_equal MOVE_POWER_BEST, Score_Minus2
-	score -3
+	if_equal MOVE_POWER_BEST, Score_Minus8
+	score -10
 	end
 	
 AI_DiscourageMagicGuard:
@@ -1389,7 +1397,7 @@ AI_CV_MirrorMove_EncouragedMovesToMirror: @ 82DCB6C
     .2byte MOVE_TRICK
     .2byte MOVE_SUPERPOWER
     .2byte MOVE_SKILL_SWAP
-    .2byte -1
+    .2byte 0xFFFF
 
 AI_CV_AttackUp: @ 82DCBBC
 	if_physical_moves_unusable AI_USER, AI_TARGET, Score_Minus8
@@ -2095,33 +2103,19 @@ EncourageLightClayEnd:
 	end
 	
 AI_CV_AuroraVeil:
+	get_weather
+	if_equal AI_WEATHER_HAIL, Score_Plus5
 	call EncourageLightClay
 	end
 
 AI_CV_Reflect:
 	call EncourageLightClay
 	if_hp_less_than AI_USER, 50, AI_CV_Reflect_ScoreDown2
-	get_target_type1
-	if_in_bytes AI_CV_Reflect_PhysicalTypeList, AI_CV_Reflect_End
-	get_target_type2
-	if_in_bytes AI_CV_Reflect_PhysicalTypeList, AI_CV_Reflect_End
 	if_random_less_than 50, AI_CV_Reflect_End
 AI_CV_Reflect_ScoreDown2:
 	score -2
 AI_CV_Reflect_End:
 	end
-
-AI_CV_Reflect_PhysicalTypeList:
-    .byte TYPE_NORMAL
-    .byte TYPE_FIGHTING
-    .byte TYPE_FLYING
-    .byte TYPE_POISON
-    .byte TYPE_GROUND
-    .byte TYPE_ROCK
-    .byte TYPE_BUG
-    .byte TYPE_GHOST
-    .byte TYPE_STEEL
-    .byte -1
 
 AI_CV_ToxicThread:
 	if_status AI_TARGET, STATUS1_ANY, AI_CV_ToxicThreadSpd
@@ -2322,69 +2316,79 @@ AI_CV_Encore_End:
 	end
 
 AI_CV_Encore_EncouragedMovesToEncore:
-    .byte EFFECT_DREAM_EATER
-    .byte EFFECT_ATTACK_UP
-    .byte EFFECT_DEFENSE_UP
-    .byte EFFECT_SPEED_UP
-    .byte EFFECT_SPECIAL_ATTACK_UP
-    .byte EFFECT_HAZE
-    .byte EFFECT_ROAR
-    .byte EFFECT_CONVERSION
-    .byte EFFECT_TOXIC
-    .byte EFFECT_LIGHT_SCREEN
-    .byte EFFECT_REST
-    .byte EFFECT_SUPER_FANG
-    .byte EFFECT_SPECIAL_DEFENSE_UP_2
-    .byte EFFECT_CONFUSE
-    .byte EFFECT_POISON
-    .byte EFFECT_PARALYZE
-    .byte EFFECT_LEECH_SEED
-    .byte EFFECT_DO_NOTHING
-    .byte EFFECT_ATTACK_UP_2
-    .byte EFFECT_ENCORE
-    .byte EFFECT_CONVERSION_2
-    .byte EFFECT_LOCK_ON
-    .byte EFFECT_HEAL_BELL
-    .byte EFFECT_MEAN_LOOK
-    .byte EFFECT_NIGHTMARE
-    .byte EFFECT_PROTECT
-    .byte EFFECT_SKILL_SWAP
-    .byte EFFECT_FORESIGHT
-    .byte EFFECT_PERISH_SONG
-    .byte EFFECT_SANDSTORM
-    .byte EFFECT_ENDURE
-    .byte EFFECT_SWAGGER
-    .byte EFFECT_ATTRACT
-    .byte EFFECT_SAFEGUARD
-    .byte EFFECT_RAIN_DANCE
-    .byte EFFECT_SUNNY_DAY
-    .byte EFFECT_BELLY_DRUM
-    .byte EFFECT_PSYCH_UP
-    .byte EFFECT_FUTURE_SIGHT
-    .byte EFFECT_FAKE_OUT
-    .byte EFFECT_STOCKPILE
-    .byte EFFECT_SPIT_UP
-    .byte EFFECT_SWALLOW
-    .byte EFFECT_HAIL
-    .byte EFFECT_TORMENT
-    .byte EFFECT_WILL_O_WISP
-    .byte EFFECT_FOLLOW_ME
-    .byte EFFECT_CHARGE
-    .byte EFFECT_TRICK
-    .byte EFFECT_ROLE_PLAY
-    .byte EFFECT_INGRAIN
-    .byte EFFECT_RECYCLE
-    .byte EFFECT_KNOCK_OFF
-    .byte EFFECT_SKILL_SWAP
-    .byte EFFECT_IMPRISON
-    .byte EFFECT_REFRESH
-    .byte EFFECT_GRUDGE
-    .byte EFFECT_TEETER_DANCE
-    .byte EFFECT_MUD_SPORT
-    .byte EFFECT_WATER_SPORT
-    .byte EFFECT_DRAGON_DANCE
-    .byte EFFECT_CAMOUFLAGE
-    .byte -1
+    .2byte EFFECT_DREAM_EATER
+    .2byte EFFECT_ATTACK_UP
+    .2byte EFFECT_DEFENSE_UP
+    .2byte EFFECT_SPEED_UP
+    .2byte EFFECT_SPECIAL_ATTACK_UP
+    .2byte EFFECT_HAZE
+    .2byte EFFECT_ROAR
+    .2byte EFFECT_CONVERSION
+    .2byte EFFECT_TOXIC
+    .2byte EFFECT_LIGHT_SCREEN
+	.2byte EFFECT_AURORA_VEIL
+    .2byte EFFECT_REST
+    .2byte EFFECT_SUPER_FANG
+    .2byte EFFECT_SPECIAL_DEFENSE_UP_2
+    .2byte EFFECT_CONFUSE
+    .2byte EFFECT_POISON
+    .2byte EFFECT_PARALYZE
+    .2byte EFFECT_LEECH_SEED
+    .2byte EFFECT_DO_NOTHING
+    .2byte EFFECT_ATTACK_UP_2
+    .2byte EFFECT_ENCORE
+    .2byte EFFECT_CONVERSION_2
+    .2byte EFFECT_LOCK_ON
+    .2byte EFFECT_HEAL_BELL
+    .2byte EFFECT_MEAN_LOOK
+    .2byte EFFECT_NIGHTMARE
+    .2byte EFFECT_PROTECT
+    .2byte EFFECT_SKILL_SWAP
+    .2byte EFFECT_FORESIGHT
+    .2byte EFFECT_PERISH_SONG
+    .2byte EFFECT_SANDSTORM
+    .2byte EFFECT_ENDURE
+    .2byte EFFECT_SWAGGER
+    .2byte EFFECT_ATTRACT
+    .2byte EFFECT_SAFEGUARD
+    .2byte EFFECT_RAIN_DANCE
+    .2byte EFFECT_SUNNY_DAY
+    .2byte EFFECT_BELLY_DRUM
+    .2byte EFFECT_PSYCH_UP
+    .2byte EFFECT_FUTURE_SIGHT
+    .2byte EFFECT_FAKE_OUT
+    .2byte EFFECT_STOCKPILE
+    .2byte EFFECT_SPIT_UP
+    .2byte EFFECT_SWALLOW
+    .2byte EFFECT_HAIL
+    .2byte EFFECT_TORMENT
+    .2byte EFFECT_WILL_O_WISP
+    .2byte EFFECT_FOLLOW_ME
+    .2byte EFFECT_CHARGE
+    .2byte EFFECT_TRICK
+    .2byte EFFECT_ROLE_PLAY
+    .2byte EFFECT_INGRAIN
+    .2byte EFFECT_RECYCLE
+    .2byte EFFECT_KNOCK_OFF
+    .2byte EFFECT_SKILL_SWAP
+    .2byte EFFECT_IMPRISON
+    .2byte EFFECT_REFRESH
+    .2byte EFFECT_GRUDGE
+    .2byte EFFECT_TEETER_DANCE
+    .2byte EFFECT_MUD_SPORT
+    .2byte EFFECT_WATER_SPORT
+    .2byte EFFECT_DRAGON_DANCE
+    .2byte EFFECT_CAMOUFLAGE
+	.2byte EFFECT_QUIVER_DANCE
+	.2byte EFFECT_SHELL_SMASH
+   	.2byte EFFECT_COIL
+	.2byte EFFECT_SHIFT_GEAR
+	.2byte EFFECT_TAILWIND
+	.2byte EFFECT_WORRY_SEED
+	.2byte EFFECT_AQUA_RING
+	.2byte EFFECT_MAGNET_RISE
+	.2byte EFFECT_STEALTH_ROCK
+    .2byte 0xFFFF
 
 AI_CV_PainSplit:
 	if_hp_less_than AI_TARGET, 80, AI_CV_PainSplit_ScoreDown1
@@ -2972,19 +2976,20 @@ AI_CV_SandstormResistantTypes:
     .byte -1
 	
 AI_SandstormResistantAbilities:
-	.byte ABILITY_SAND_VEIL
-	.byte ABILITY_SAND_FORCE
-	.byte ABILITY_SAND_RUSH
-	.byte ABILITY_OVERCOAT
-	.byte ABILITY_MAGIC_GUARD
-	.byte -1
+	.2byte ABILITY_SAND_VEIL
+	.2byte ABILITY_SAND_FORCE
+	.2byte ABILITY_SAND_RUSH
+	.2byte ABILITY_OVERCOAT
+	.2byte ABILITY_MAGIC_GUARD
+	.2byte 0xFFFF
 	
 AI_HailResistantAbilities:
-	.byte ABILITY_ICE_BODY
-	.byte ABILITY_SNOW_CLOAK
-	.byte ABILITY_OVERCOAT
-	.byte ABILITY_MAGIC_GUARD
-	.byte -1
+	.2byte ABILITY_ICE_BODY
+	.2byte ABILITY_SNOW_CLOAK
+	.2byte ABILITY_OVERCOAT
+	.2byte ABILITY_MAGIC_GUARD
+	.2byte ABILITY_SLUSH_RUSH
+	.2byte 0xFFFF
 
 AI_CV_FakeOut:
 	if_ability AI_TARGET, ABILITY_INNER_FOCUS, AI_CV_FakeOut_End
@@ -3031,6 +3036,7 @@ AI_CV_Hail_AbilityPlus:
 	score +1
 AI_CV_Hail_Move:
 	if_has_move AI_USER, MOVE_BLIZZARD, AI_CV_Hail_MovePlus
+	if_has_move AI_USER, MOVE_AURORA_VEIL, AI_CV_Hail_MovePlus
 	if_has_move AI_USER_PARTNER, MOVE_BLIZZARD, AI_CV_Hail_MovePlus
 	goto AI_CV_Hail_End
 AI_CV_Hail_MovePlus:
@@ -3169,23 +3175,23 @@ AI_CV_ChangeSelfAbility_End:
 	end
 
 AI_CV_ChangeSelfAbility_AbilitiesToEncourage:
-    .byte ABILITY_SPEED_BOOST
-    .byte ABILITY_BATTLE_ARMOR
-    .byte ABILITY_SAND_VEIL
-    .byte ABILITY_STATIC
-    .byte ABILITY_FLASH_FIRE
-    .byte ABILITY_WONDER_GUARD
-    .byte ABILITY_EFFECT_SPORE
-    .byte ABILITY_SWIFT_SWIM
-    .byte ABILITY_HUGE_POWER
-    .byte ABILITY_RAIN_DISH
-    .byte ABILITY_CUTE_CHARM
-    .byte ABILITY_SHED_SKIN
-    .byte ABILITY_MARVEL_SCALE
-    .byte ABILITY_PURE_POWER
-    .byte ABILITY_CHLOROPHYLL
-    .byte ABILITY_SHIELD_DUST
-    .byte -1
+    .2byte ABILITY_SPEED_BOOST
+    .2byte ABILITY_BATTLE_ARMOR
+    .2byte ABILITY_SAND_VEIL
+    .2byte ABILITY_STATIC
+    .2byte ABILITY_FLASH_FIRE
+    .2byte ABILITY_WONDER_GUARD
+    .2byte ABILITY_EFFECT_SPORE
+    .2byte ABILITY_SWIFT_SWIM
+    .2byte ABILITY_HUGE_POWER
+    .2byte ABILITY_RAIN_DISH
+    .2byte ABILITY_CUTE_CHARM
+    .2byte ABILITY_SHED_SKIN
+    .2byte ABILITY_MARVEL_SCALE
+    .2byte ABILITY_PURE_POWER
+    .2byte ABILITY_CHLOROPHYLL
+    .2byte ABILITY_SHIELD_DUST
+    .2byte 0xFFFF
 
 AI_CV_Superpower:
 	if_type_effectiveness AI_EFFECTIVENESS_x0_25, AI_CV_Superpower_ScoreDown1
@@ -3553,21 +3559,23 @@ AI_SetupFirstTurn_SetupEffectsToEncourage:
     .2byte EFFECT_SANDSTORM
     .2byte EFFECT_HAIL
     .2byte EFFECT_GEOMANCY
-    .2byte -1
+	.2byte EFFECT_AURORA_VEIL
+    .2byte 0xFFFF
+
 
 AI_PreferStrongestMove:
 	if_target_is_ally AI_Ret
 	get_how_powerful_move_is
 	if_not_equal MOVE_POWER_BEST, AI_PreferStrongestMove_End
-	if_random_less_than 100, AI_PreferStrongestMove_End
-	score +2
+	@if_random_less_than 100, AI_PreferStrongestMove_End
+	score +3
 AI_PreferStrongestMove_End:
 	end
 
 AI_Risky:
 	if_target_is_ally AI_Ret
 	get_considered_move_effect
-	if_move_flag FLAG_HIGH_CRIT AI_Risky_RandChance
+	@if_move_flag FLAG_HIGH_CRIT AI_Risky_RandChance
 	if_not_in_bytes AI_Risky_EffectsToEncourage, AI_Risky_End
 AI_Risky_RandChance:
 	if_random_less_than 128, AI_Risky_End
@@ -3607,7 +3615,7 @@ sMovesTable_ProtectMoves:
 	.2byte MOVE_QUICK_GUARD
 	.2byte MOVE_BANEFUL_BUNKER
 	.2byte MOVE_OBSTRUCT
-    .2byte -1
+    .2byte 0xFFFF
 
 .align 1
 sEffectsStatRaise:
@@ -3631,7 +3639,7 @@ sEffectsStatRaise:
 	.2byte EFFECT_GROWTH
 	.2byte EFFECT_COIL
 	.2byte EFFECT_QUIVER_DANCE
-	.2byte -1
+	.2byte 0xFFFF
 
 AI_PreferBatonPass:
 	if_target_is_ally AI_Ret
@@ -3704,7 +3712,10 @@ sEffectsAtkRaise:
     .2byte EFFECT_COIL
     .2byte EFFECT_BELLY_DRUM
     .2byte EFFECT_BULK_UP
-    .2byte -1
+	.2byte EFFECT_SHELL_SMASH
+	.2byte EFFECT_GROWTH
+	.2byte EFFECT_ATTACK_SPATK_UP
+    .2byte 0xFFFF
 	
 AI_PartnerChoseHelpingHand:
 	@ Do not use a status move if you know your move's power will be boosted
@@ -3764,7 +3775,7 @@ AI_DoubleBattleCheckUserStatus2:
 	get_how_powerful_move_is
 	if_equal MOVE_POWER_DISCOURAGED, Score_Minus5
 	score +1
-	if_equal MOVE_POWER_BEST, Score_Plus2
+	if_equal MOVE_POWER_BEST, Score_Plus5
 	end
 
 AI_DoubleBattleAllHittingGroundMove:
@@ -3859,6 +3870,11 @@ AI_TrySkillSwapOnAlly2:
 	if_has_move AI_USER_PARTNER, MOVE_DYNAMIC_PUNCH, AI_TrySkillSwapOnAllyPlus3
 	if_has_move AI_USER_PARTNER, MOVE_BLIZZARD, AI_TrySkillSwapOnAllyPlus3
 	if_has_move AI_USER_PARTNER, MOVE_MEGAHORN, AI_TrySkillSwapOnAllyPlus3
+	if_has_move AI_USER_PARTNER, MOVE_ZAP_CANNON, AI_TrySkillSwapOnAllyPlus3
+	if_has_move AI_USER_PARTNER, MOVE_INFERNO, AI_TrySkillSwapOnAllyPlus3
+	if_has_move AI_USER_PARTNER, MOVE_HURRICANE, AI_TrySkillSwapOnAllyPlus3
+	if_has_move AI_USER_PARTNER, MOVE_FOCUS_BLAST, AI_TrySkillSwapOnAllyPlus3
+	if_has_move AI_USER_PARTNER, MOVE_STONE_EDGE, AI_TrySkillSwapOnAllyPlus3
 	goto Score_Minus30
 
 AI_TrySkillSwapOnAllyPlus3:
@@ -3878,7 +3894,9 @@ AI_TryHelpingHandOnAlly:
 AI_TrySwaggerOnAlly:
 	if_has_no_physical_move AI_USER_PARTNER, Score_Minus30
 	if_holds_item AI_TARGET, ITEM_PERSIM_BERRY, AI_TrySwaggerOnAlly2
+	if_holds_item AI_TARGET, ITEM_LUM_BERRY, AI_TrySwaggerOnAlly2
 	if_ability AI_USER_PARTNER, ABILITY_OWN_TEMPO, AI_TrySwaggerOnAlly2
+	if_ability AI_USER_PARTNER, ABILITY_TANGLED_FEET, AI_TrySwaggerOnAlly2
 	goto Score_Minus30
 
 AI_TrySwaggerOnAlly2:
@@ -3950,209 +3968,225 @@ AI_HPAware_DiscouragedEffectsWhenHighHP: @ 82DE21F
     .2byte EFFECT_ROOST
     .2byte EFFECT_MEMENTO
     .2byte EFFECT_GRUDGE
-    .2byte EFFECT_OVERHEAT
-    .2byte -1
+    @.2byte EFFECT_OVERHEAT
+    .2byte 0xFFFF
 
 AI_HPAware_DiscouragedEffectsWhenMediumHP: @ 82DE22D
-    .byte EFFECT_EXPLOSION
-    .byte EFFECT_ATTACK_UP
-    .byte EFFECT_DEFENSE_UP
-    .byte EFFECT_SPEED_UP
-    .byte EFFECT_SPECIAL_ATTACK_UP
-    .byte EFFECT_SPECIAL_DEFENSE_UP
-    .byte EFFECT_ACCURACY_UP
-    .byte EFFECT_EVASION_UP
-    .byte EFFECT_ATTACK_DOWN
-    .byte EFFECT_DEFENSE_DOWN
-    .byte EFFECT_SPEED_DOWN
-    .byte EFFECT_SPECIAL_ATTACK_DOWN
-    .byte EFFECT_SPECIAL_DEFENSE_DOWN
-    .byte EFFECT_ACCURACY_DOWN
-    .byte EFFECT_EVASION_DOWN
-    .byte EFFECT_BIDE
-    .byte EFFECT_CONVERSION
-    .byte EFFECT_LIGHT_SCREEN
-    .byte EFFECT_MIST
-    .byte EFFECT_FOCUS_ENERGY
-    .byte EFFECT_ATTACK_UP_2
-    .byte EFFECT_DEFENSE_UP_2
-    .byte EFFECT_SPEED_UP_2
-    .byte EFFECT_SPECIAL_ATTACK_UP_2
-    .byte EFFECT_SPECIAL_DEFENSE_UP_2
-    .byte EFFECT_ACCURACY_UP_2
-    .byte EFFECT_EVASION_UP_2
-    .byte EFFECT_ATTACK_DOWN_2
-    .byte EFFECT_DEFENSE_DOWN_2
-    .byte EFFECT_SPEED_DOWN_2
-    .byte EFFECT_SPECIAL_ATTACK_DOWN_2
-    .byte EFFECT_SPECIAL_DEFENSE_DOWN_2
-    .byte EFFECT_ACCURACY_DOWN_2
-    .byte EFFECT_EVASION_DOWN_2
-    .byte EFFECT_CONVERSION_2
-    .byte EFFECT_SAFEGUARD
-    .byte EFFECT_BELLY_DRUM
-    .byte EFFECT_TICKLE
-    .byte EFFECT_COSMIC_POWER
-    .byte EFFECT_BULK_UP
-    .byte EFFECT_CALM_MIND
-    .byte EFFECT_DRAGON_DANCE
-    .byte -1
+    .2byte EFFECT_EXPLOSION
+    .2byte EFFECT_ATTACK_UP
+    .2byte EFFECT_DEFENSE_UP
+    .2byte EFFECT_SPEED_UP
+    .2byte EFFECT_SPECIAL_ATTACK_UP
+    .2byte EFFECT_SPECIAL_DEFENSE_UP
+    .2byte EFFECT_ACCURACY_UP
+    .2byte EFFECT_EVASION_UP
+    .2byte EFFECT_ATTACK_DOWN
+    .2byte EFFECT_DEFENSE_DOWN
+    .2byte EFFECT_SPEED_DOWN
+    .2byte EFFECT_SPECIAL_ATTACK_DOWN
+    .2byte EFFECT_SPECIAL_DEFENSE_DOWN
+    .2byte EFFECT_ACCURACY_DOWN
+    .2byte EFFECT_EVASION_DOWN
+    .2byte EFFECT_BIDE
+    .2byte EFFECT_CONVERSION
+    .2byte EFFECT_LIGHT_SCREEN
+    .2byte EFFECT_MIST
+    .2byte EFFECT_FOCUS_ENERGY
+    .2byte EFFECT_ATTACK_UP_2
+    .2byte EFFECT_DEFENSE_UP_2
+    .2byte EFFECT_SPEED_UP_2
+    .2byte EFFECT_SPECIAL_ATTACK_UP_2
+    .2byte EFFECT_SPECIAL_DEFENSE_UP_2
+    .2byte EFFECT_ACCURACY_UP_2
+    .2byte EFFECT_EVASION_UP_2
+    .2byte EFFECT_ATTACK_DOWN_2
+    .2byte EFFECT_DEFENSE_DOWN_2
+    .2byte EFFECT_SPEED_DOWN_2
+    .2byte EFFECT_SPECIAL_ATTACK_DOWN_2
+    .2byte EFFECT_SPECIAL_DEFENSE_DOWN_2
+    .2byte EFFECT_ACCURACY_DOWN_2
+    .2byte EFFECT_EVASION_DOWN_2
+    .2byte EFFECT_CONVERSION_2
+    .2byte EFFECT_SAFEGUARD
+    .2byte EFFECT_BELLY_DRUM
+    .2byte EFFECT_TICKLE
+    .2byte EFFECT_COSMIC_POWER
+    .2byte EFFECT_BULK_UP
+    .2byte EFFECT_CALM_MIND
+    .2byte EFFECT_DRAGON_DANCE
+	.2byte EFFECT_QUIVER_DANCE
+	.2byte EFFECT_SHELL_SMASH
+	.2byte EFFECT_COIL
+	.2byte EFFECT_SHIFT_GEAR
+    .2byte 0xFFFF
 
 AI_HPAware_DiscouragedEffectsWhenLowHP: @ 82DE258
-    .byte EFFECT_ATTACK_UP
-    .byte EFFECT_DEFENSE_UP
-    .byte EFFECT_SPEED_UP
-    .byte EFFECT_SPECIAL_ATTACK_UP
-    .byte EFFECT_SPECIAL_DEFENSE_UP
-    .byte EFFECT_ACCURACY_UP
-    .byte EFFECT_EVASION_UP
-    .byte EFFECT_ATTACK_DOWN
-    .byte EFFECT_DEFENSE_DOWN
-    .byte EFFECT_SPEED_DOWN
-    .byte EFFECT_SPECIAL_ATTACK_DOWN
-    .byte EFFECT_SPECIAL_DEFENSE_DOWN
-    .byte EFFECT_ACCURACY_DOWN
-    .byte EFFECT_EVASION_DOWN
-    .byte EFFECT_BIDE
-    .byte EFFECT_CONVERSION
-    .byte EFFECT_LIGHT_SCREEN
-    .byte EFFECT_MIST
-    .byte EFFECT_FOCUS_ENERGY
-    .byte EFFECT_ATTACK_UP_2
-    .byte EFFECT_DEFENSE_UP_2
-    .byte EFFECT_SPEED_UP_2
-    .byte EFFECT_SPECIAL_ATTACK_UP_2
-    .byte EFFECT_SPECIAL_DEFENSE_UP_2
-    .byte EFFECT_ACCURACY_UP_2
-    .byte EFFECT_EVASION_UP_2
-    .byte EFFECT_ATTACK_DOWN_2
-    .byte EFFECT_DEFENSE_DOWN_2
-    .byte EFFECT_SPEED_DOWN_2
-    .byte EFFECT_SPECIAL_ATTACK_DOWN_2
-    .byte EFFECT_SPECIAL_DEFENSE_DOWN_2
-    .byte EFFECT_ACCURACY_DOWN_2
-    .byte EFFECT_EVASION_DOWN_2
-    .byte EFFECT_RAGE
-    .byte EFFECT_CONVERSION_2
-    .byte EFFECT_LOCK_ON
-    .byte EFFECT_SAFEGUARD
-    .byte EFFECT_BELLY_DRUM
-    .byte EFFECT_PSYCH_UP
-    .byte EFFECT_MIRROR_COAT
-    .byte EFFECT_SOLARBEAM
-    .byte EFFECT_ERUPTION
-    .byte EFFECT_TICKLE
-    .byte EFFECT_COSMIC_POWER
-    .byte EFFECT_BULK_UP
-    .byte EFFECT_CALM_MIND
-    .byte EFFECT_DRAGON_DANCE
-    .byte -1
+    .2byte EFFECT_ATTACK_UP
+    .2byte EFFECT_DEFENSE_UP
+    .2byte EFFECT_SPEED_UP
+    .2byte EFFECT_SPECIAL_ATTACK_UP
+    .2byte EFFECT_SPECIAL_DEFENSE_UP
+    .2byte EFFECT_ACCURACY_UP
+    .2byte EFFECT_EVASION_UP
+    .2byte EFFECT_ATTACK_DOWN
+    .2byte EFFECT_DEFENSE_DOWN
+    .2byte EFFECT_SPEED_DOWN
+    .2byte EFFECT_SPECIAL_ATTACK_DOWN
+    .2byte EFFECT_SPECIAL_DEFENSE_DOWN
+    .2byte EFFECT_ACCURACY_DOWN
+    .2byte EFFECT_EVASION_DOWN
+    .2byte EFFECT_BIDE
+    .2byte EFFECT_CONVERSION
+    .2byte EFFECT_LIGHT_SCREEN
+    .2byte EFFECT_MIST
+    .2byte EFFECT_FOCUS_ENERGY
+    .2byte EFFECT_ATTACK_UP_2
+    .2byte EFFECT_DEFENSE_UP_2
+    .2byte EFFECT_SPEED_UP_2
+    .2byte EFFECT_SPECIAL_ATTACK_UP_2
+    .2byte EFFECT_SPECIAL_DEFENSE_UP_2
+    .2byte EFFECT_ACCURACY_UP_2
+    .2byte EFFECT_EVASION_UP_2
+    .2byte EFFECT_ATTACK_DOWN_2
+    .2byte EFFECT_DEFENSE_DOWN_2
+    .2byte EFFECT_SPEED_DOWN_2
+    .2byte EFFECT_SPECIAL_ATTACK_DOWN_2
+    .2byte EFFECT_SPECIAL_DEFENSE_DOWN_2
+    .2byte EFFECT_ACCURACY_DOWN_2
+    .2byte EFFECT_EVASION_DOWN_2
+    .2byte EFFECT_RAGE
+    .2byte EFFECT_CONVERSION_2
+    .2byte EFFECT_LOCK_ON
+    .2byte EFFECT_SAFEGUARD
+    .2byte EFFECT_BELLY_DRUM
+    .2byte EFFECT_PSYCH_UP
+    .2byte EFFECT_MIRROR_COAT
+    .2byte EFFECT_SOLARBEAM
+    .2byte EFFECT_ERUPTION
+    .2byte EFFECT_TICKLE
+    .2byte EFFECT_COSMIC_POWER
+    .2byte EFFECT_BULK_UP
+    .2byte EFFECT_CALM_MIND
+    .2byte EFFECT_DRAGON_DANCE
+	.2byte EFFECT_QUIVER_DANCE
+	.2byte EFFECT_SHELL_SMASH
+	.2byte EFFECT_COIL
+	.2byte EFFECT_SHIFT_GEAR
+    .2byte 0xFFFF
 
 AI_HPAware_DiscouragedEffectsWhenTargetHighHP: @ 82DE288
     .byte -1
 
 AI_HPAware_DiscouragedEffectsWhenTargetMediumHP: @ 82DE289
-    .byte EFFECT_ATTACK_UP
-    .byte EFFECT_DEFENSE_UP
-    .byte EFFECT_SPEED_UP
-    .byte EFFECT_SPECIAL_ATTACK_UP
-    .byte EFFECT_SPECIAL_DEFENSE_UP
-    .byte EFFECT_ACCURACY_UP
-    .byte EFFECT_EVASION_UP
-    .byte EFFECT_ATTACK_DOWN
-    .byte EFFECT_DEFENSE_DOWN
-    .byte EFFECT_SPEED_DOWN
-    .byte EFFECT_SPECIAL_ATTACK_DOWN
-    .byte EFFECT_SPECIAL_DEFENSE_DOWN
-    .byte EFFECT_ACCURACY_DOWN
-    .byte EFFECT_EVASION_DOWN
-    .byte EFFECT_MIST
-    .byte EFFECT_FOCUS_ENERGY
-    .byte EFFECT_ATTACK_UP_2
-    .byte EFFECT_DEFENSE_UP_2
-    .byte EFFECT_SPEED_UP_2
-    .byte EFFECT_SPECIAL_ATTACK_UP_2
-    .byte EFFECT_SPECIAL_DEFENSE_UP_2
-    .byte EFFECT_ACCURACY_UP_2
-    .byte EFFECT_EVASION_UP_2
-    .byte EFFECT_ATTACK_DOWN_2
-    .byte EFFECT_DEFENSE_DOWN_2
-    .byte EFFECT_SPEED_DOWN_2
-    .byte EFFECT_SPECIAL_ATTACK_DOWN_2
-    .byte EFFECT_SPECIAL_DEFENSE_DOWN_2
-    .byte EFFECT_ACCURACY_DOWN_2
-    .byte EFFECT_EVASION_DOWN_2
-    .byte EFFECT_POISON
-    .byte EFFECT_PAIN_SPLIT
-    .byte EFFECT_PERISH_SONG
-    .byte EFFECT_SAFEGUARD
-    .byte EFFECT_TICKLE
-    .byte EFFECT_COSMIC_POWER
-    .byte EFFECT_BULK_UP
-    .byte EFFECT_CALM_MIND
-    .byte EFFECT_DRAGON_DANCE
-    .byte -1
+    .2byte EFFECT_ATTACK_UP
+    .2byte EFFECT_DEFENSE_UP
+    .2byte EFFECT_SPEED_UP
+    .2byte EFFECT_SPECIAL_ATTACK_UP
+    .2byte EFFECT_SPECIAL_DEFENSE_UP
+    .2byte EFFECT_ACCURACY_UP
+    .2byte EFFECT_EVASION_UP
+    .2byte EFFECT_ATTACK_DOWN
+    .2byte EFFECT_DEFENSE_DOWN
+    .2byte EFFECT_SPEED_DOWN
+    .2byte EFFECT_SPECIAL_ATTACK_DOWN
+    .2byte EFFECT_SPECIAL_DEFENSE_DOWN
+    .2byte EFFECT_ACCURACY_DOWN
+    .2byte EFFECT_EVASION_DOWN
+    .2byte EFFECT_MIST
+    .2byte EFFECT_FOCUS_ENERGY
+    .2byte EFFECT_ATTACK_UP_2
+    .2byte EFFECT_DEFENSE_UP_2
+    .2byte EFFECT_SPEED_UP_2
+    .2byte EFFECT_SPECIAL_ATTACK_UP_2
+    .2byte EFFECT_SPECIAL_DEFENSE_UP_2
+    .2byte EFFECT_ACCURACY_UP_2
+    .2byte EFFECT_EVASION_UP_2
+    .2byte EFFECT_ATTACK_DOWN_2
+    .2byte EFFECT_DEFENSE_DOWN_2
+    .2byte EFFECT_SPEED_DOWN_2
+    .2byte EFFECT_SPECIAL_ATTACK_DOWN_2
+    .2byte EFFECT_SPECIAL_DEFENSE_DOWN_2
+    .2byte EFFECT_ACCURACY_DOWN_2
+    .2byte EFFECT_EVASION_DOWN_2
+    .2byte EFFECT_POISON
+    .2byte EFFECT_PAIN_SPLIT
+    .2byte EFFECT_PERISH_SONG
+    .2byte EFFECT_SAFEGUARD
+    .2byte EFFECT_TICKLE
+    .2byte EFFECT_COSMIC_POWER
+    .2byte EFFECT_BULK_UP
+    .2byte EFFECT_CALM_MIND
+    .2byte EFFECT_DRAGON_DANCE
+	.2byte EFFECT_QUIVER_DANCE
+	.2byte EFFECT_SHELL_SMASH
+	.2byte EFFECT_COIL
+	.2byte EFFECT_SHIFT_GEAR
+    .2byte 0xFFFF
 
 AI_HPAware_DiscouragedEffectsWhenTargetLowHP: @ 82DE2B1
-    .byte EFFECT_SLEEP
-    .byte EFFECT_EXPLOSION
-    .byte EFFECT_ATTACK_UP
-    .byte EFFECT_DEFENSE_UP
-    .byte EFFECT_SPEED_UP
-    .byte EFFECT_SPECIAL_ATTACK_UP
-    .byte EFFECT_SPECIAL_DEFENSE_UP
-    .byte EFFECT_ACCURACY_UP
-    .byte EFFECT_EVASION_UP
-    .byte EFFECT_ATTACK_DOWN
-    .byte EFFECT_DEFENSE_DOWN
-    .byte EFFECT_SPEED_DOWN
-    .byte EFFECT_SPECIAL_ATTACK_DOWN
-    .byte EFFECT_SPECIAL_DEFENSE_DOWN
-    .byte EFFECT_ACCURACY_DOWN
-    .byte EFFECT_EVASION_DOWN
-    .byte EFFECT_BIDE
-    .byte EFFECT_CONVERSION
-    .byte EFFECT_TOXIC
-    .byte EFFECT_LIGHT_SCREEN
-    .byte EFFECT_OHKO
-    .byte EFFECT_SUPER_FANG
-    .byte EFFECT_MIST
-    .byte EFFECT_FOCUS_ENERGY
-    .byte EFFECT_CONFUSE
-    .byte EFFECT_ATTACK_UP_2
-    .byte EFFECT_DEFENSE_UP_2
-    .byte EFFECT_SPEED_UP_2
-    .byte EFFECT_SPECIAL_ATTACK_UP_2
-    .byte EFFECT_SPECIAL_DEFENSE_UP_2
-    .byte EFFECT_ACCURACY_UP_2
-    .byte EFFECT_EVASION_UP_2
-    .byte EFFECT_ATTACK_DOWN_2
-    .byte EFFECT_DEFENSE_DOWN_2
-    .byte EFFECT_SPEED_DOWN_2
-    .byte EFFECT_SPECIAL_ATTACK_DOWN_2
-    .byte EFFECT_SPECIAL_DEFENSE_DOWN_2
-    .byte EFFECT_ACCURACY_DOWN_2
-    .byte EFFECT_EVASION_DOWN_2
-    .byte EFFECT_POISON
-    .byte EFFECT_PARALYZE
-    .byte EFFECT_PAIN_SPLIT
-    .byte EFFECT_CONVERSION_2
-    .byte EFFECT_LOCK_ON
-    .byte EFFECT_SPITE
-    .byte EFFECT_PERISH_SONG
-    .byte EFFECT_SWAGGER
-    .byte EFFECT_FURY_CUTTER
-    .byte EFFECT_ATTRACT
-    .byte EFFECT_SAFEGUARD
-    .byte EFFECT_PSYCH_UP
-    .byte EFFECT_MIRROR_COAT
-    .byte EFFECT_WILL_O_WISP
-    .byte EFFECT_TICKLE
-    .byte EFFECT_COSMIC_POWER
-    .byte EFFECT_BULK_UP
-    .byte EFFECT_CALM_MIND
-    .byte EFFECT_DRAGON_DANCE
-    .byte -1
+    .2byte EFFECT_SLEEP
+    .2byte EFFECT_EXPLOSION
+    .2byte EFFECT_ATTACK_UP
+    .2byte EFFECT_DEFENSE_UP
+    .2byte EFFECT_SPEED_UP
+    .2byte EFFECT_SPECIAL_ATTACK_UP
+    .2byte EFFECT_SPECIAL_DEFENSE_UP
+    .2byte EFFECT_ACCURACY_UP
+    .2byte EFFECT_EVASION_UP
+    .2byte EFFECT_ATTACK_DOWN
+    .2byte EFFECT_DEFENSE_DOWN
+    .2byte EFFECT_SPEED_DOWN
+    .2byte EFFECT_SPECIAL_ATTACK_DOWN
+    .2byte EFFECT_SPECIAL_DEFENSE_DOWN
+    .2byte EFFECT_ACCURACY_DOWN
+    .2byte EFFECT_EVASION_DOWN
+    .2byte EFFECT_BIDE
+    .2byte EFFECT_CONVERSION
+    .2byte EFFECT_TOXIC
+    .2byte EFFECT_LIGHT_SCREEN
+    .2byte EFFECT_OHKO
+    .2byte EFFECT_SUPER_FANG
+    .2byte EFFECT_MIST
+    .2byte EFFECT_FOCUS_ENERGY
+    .2byte EFFECT_CONFUSE
+    .2byte EFFECT_ATTACK_UP_2
+    .2byte EFFECT_DEFENSE_UP_2
+    .2byte EFFECT_SPEED_UP_2
+    .2byte EFFECT_SPECIAL_ATTACK_UP_2
+    .2byte EFFECT_SPECIAL_DEFENSE_UP_2
+    .2byte EFFECT_ACCURACY_UP_2
+    .2byte EFFECT_EVASION_UP_2
+    .2byte EFFECT_ATTACK_DOWN_2
+    .2byte EFFECT_DEFENSE_DOWN_2
+    .2byte EFFECT_SPEED_DOWN_2
+    .2byte EFFECT_SPECIAL_ATTACK_DOWN_2
+    .2byte EFFECT_SPECIAL_DEFENSE_DOWN_2
+    .2byte EFFECT_ACCURACY_DOWN_2
+    .2byte EFFECT_EVASION_DOWN_2
+    .2byte EFFECT_POISON
+    .2byte EFFECT_PARALYZE
+    .2byte EFFECT_PAIN_SPLIT
+    .2byte EFFECT_CONVERSION_2
+    .2byte EFFECT_LOCK_ON
+    .2byte EFFECT_SPITE
+    .2byte EFFECT_PERISH_SONG
+    .2byte EFFECT_SWAGGER
+    .2byte EFFECT_FURY_CUTTER
+    .2byte EFFECT_ATTRACT
+    .2byte EFFECT_SAFEGUARD
+    .2byte EFFECT_PSYCH_UP
+    .2byte EFFECT_MIRROR_COAT
+    .2byte EFFECT_WILL_O_WISP
+    .2byte EFFECT_TICKLE
+    .2byte EFFECT_COSMIC_POWER
+    .2byte EFFECT_BULK_UP
+    .2byte EFFECT_CALM_MIND
+    .2byte EFFECT_DRAGON_DANCE
+	.2byte EFFECT_QUIVER_DANCE
+	.2byte EFFECT_SHELL_SMASH
+	.2byte EFFECT_COIL
+	.2byte EFFECT_SHIFT_GEAR
+    .2byte 0xFFFF
 
 AI_Unknown:
 	if_target_is_ally AI_TryOnAlly
