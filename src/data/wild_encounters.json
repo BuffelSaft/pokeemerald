@@ -3959,7 +3959,7 @@
               {
                 "min_level": 5,
                 "max_level": 10,
-                "species": "SPECIES_FEEBAS"
+                "species": "SPECIES_MAGIKARP"
               },
               {
                 "min_level": 10,
@@ -3969,12 +3969,12 @@
               {
                 "min_level": 10,
                 "max_level": 30,
-                "species": "SPECIES_FEEBAS"
+                "species": "SPECIES_MAGIKARP"
               },
               {
                 "min_level": 10,
                 "max_level": 30,
-                "species": "SPECIES_FEEBAS"
+                "species": "SPECIES_SHARPEDO"
               },
               {
                 "min_level": 25,
@@ -3984,7 +3984,7 @@
               {
                 "min_level": 30,
                 "max_level": 35,
-                "species": "SPECIES_FEEBAS"
+                "species": "SPECIES_GYARADOS"
               },
               {
                 "min_level": 20,
