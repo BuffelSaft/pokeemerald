@@ -7216,7 +7216,7 @@ const struct Item gItems[] =
         .pocket = POCKET_ITEMS,
         .type = 4,
         .fieldUseFunc = ItemUseOutOfBattle_CannotUse,
-        .secondaryId = 0,
+        .secondaryId = TYPE_ICE,
     },
 
     [ITEM_FIGHTING_GEM] =
@@ -7230,7 +7230,7 @@ const struct Item gItems[] =
         .pocket = POCKET_ITEMS,
         .type = 4,
         .fieldUseFunc = ItemUseOutOfBattle_CannotUse,
-        .secondaryId = 0,
+        .secondaryId = TYPE_FIGHTING,
     },
 
     [ITEM_POISON_GEM] =
