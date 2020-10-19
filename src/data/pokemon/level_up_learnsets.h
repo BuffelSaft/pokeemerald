@@ -21,6 +21,7 @@ static const struct LevelUpMove sBulbasaurLevelUpLearnset[] = {
 };
 
 static const struct LevelUpMove sIvysaurLevelUpLearnset[] = {
+	LEVEL_UP_MOVE(0, MOVE_SLUDGE),
 	LEVEL_UP_MOVE(1, MOVE_GROWL),
 	LEVEL_UP_MOVE(1, MOVE_GROWTH),
 	LEVEL_UP_MOVE(1, MOVE_TACKLE),
@@ -16885,6 +16886,7 @@ static const struct LevelUpMove sAlolanPersianLevelUpLearnset[] = {
 	LEVEL_UP_MOVE(29, MOVE_POWER_GEM),
     LEVEL_UP_MOVE(32, MOVE_NASTY_PLOT),
     LEVEL_UP_MOVE(37, MOVE_ASSURANCE),
+	LEVEL_UP_MOVE(40, MOVE_DARK_PULSE),
     LEVEL_UP_MOVE(42, MOVE_CAPTIVATE),
     LEVEL_UP_MOVE(46, MOVE_SLASH),
     LEVEL_UP_MOVE(51, MOVE_FEINT),
