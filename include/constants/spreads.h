@@ -42,5 +42,6 @@
 #define SPREAD_CHANSEY                      38
 #define SPREAD_31_IV_ATK_SPEED_NAIVE        39
 #define SPREAD_31_IV_HP_ATK_MIXED           40
+#define SPREAD_31_IV_HP_SPEED_TIMID         41
 
 #endif  // GUARD_CONSTANTS_TRAINER_SPREADS

@@ -695,5 +695,24 @@ const struct TrainerMonSpread gSets[] = {
 			31		// Special Defense
 		},
 		.nature = NATURE_NAIVE
+	},
+	[SPREAD_31_IV_HP_SPEED_TIMID]  = {
+		.EVs = {
+			252,	// HP
+			  0,	// Attack
+			  0,	// Defense
+			252,	// Speed
+			  0,	// Special Attack
+			  4		// Special Defense
+		},
+		.IVs = {
+			31,		// HP
+		  	 0,		// Attack
+			31,		// Defense
+			31,		// Speed
+			31,		// Special Attack
+			31		// Special Defense
+		},
+		.nature = NATURE_TIMID
 	}
 };
