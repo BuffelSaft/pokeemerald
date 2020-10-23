@@ -51,28 +51,6 @@ MoveTutor_Text_MetronomeTaught: @ 82C75B5
 	.string "Wouldn't it be nice if we could\n"
 	.string "use it, too?$"
 
-MoveTutor_Text_SleepTalkTeach: @ 82C7637
-	.string "Humph! My wife relies on HIDDEN\n"
-	.string "POWER to stay awake.\p"
-	.string "She should just take a nap like I do,\n"
-	.string "and SLEEP TALK.\p"
-	.string "I can teach your Pokémon how to\n"
-	.string "SLEEP TALK instead. Interested?$"
-
-MoveTutor_Text_SleepTalkDeclined: @ 82C76E2
-	.string "Oh, fine, fine. You want to stay awake\n"
-	.string "with Hidden Power, too…$"
-
-MoveTutor_Text_SleepTalkWhichMon: @ 82C7721
-	.string "Ah, an appreciative child!\n"
-	.string "Which Pokémon should I teach?$"
-
-MoveTutor_Text_SleepTalkTaught: @ 82C775A
-	.string "I've never once gotten my wife's\n"
-	.string "coin trick right.\p"
-	.string "I would be happy if I got it right\n"
-	.string "even as I SLEEP TALK…$"
-
 MoveTutor_Text_SubstituteTeach: @ 82C77C6
 	.string "When I see the wide world from up\n"
 	.string "here on the roof…\p"

@@ -5,6 +5,37 @@
 Route121_MapScripts:: @ 81F5DFC
 	.byte 0
 
+Route121_EventScript_Skitty::
+	lock
+	faceplayer
+	waitse
+	playmoncry SPECIES_SKITTY, 0
+	msgbox Route121_Text_Skitty, MSGBOX_DEFAULT
+	waitmoncry
+	release
+	end
+
+Route121_EventScript_Nurse::
+	lock
+	faceplayer
+	msgbox Route121_Nurse_Text_YouNeedHealing, MSGBOX_YESNO
+	compare VAR_RESULT, YES
+	goto_if_eq Route121_Nurse_EventScript_PlayerIsGenji
+	compare VAR_RESULT, NO
+	goto_if_eq Route121_Nurse_EventScript_PlayerNotGenji
+	end
+
+Route121_Nurse_EventScript_PlayerIsGenji::
+	call Common_EventScript_OutOfCenterPartyHeal
+	msgbox Route121_Nurse_Text_AllBetter, MSGBOX_DEFAULT
+	release
+	end
+
+Route121_Nurse_EventScript_PlayerNotGenji::
+	msgbox Route121_Nurse_Text_GoodLuck, MSGBOX_DEFAULT
+	release
+	end
+
 Route121_EventScript_Woman:: @ 81F5DFD
 	msgbox Route121_Text_AheadLoomsMtPyre, MSGBOX_NPC
 	end
@@ -181,7 +212,7 @@ Route121_Text_OkayMoveOutToMtPyre: @ 81F605A
 
 Route121_Text_AheadLoomsMtPyre: @ 81F607F
 	.string "Ahead looms Mt. Pyre…\p"
-	.string "It is a natural monument to the spirits \n"
+	.string "It is a natural monument to the spirits\n"
 	.string "of departed Pokémon…$"
 
 Route121_Text_MtPyrePierSign: @ 81F60D3
@@ -193,3 +224,19 @@ Route121_Text_SafariZoneSign: @ 81F611E
 	.string "“Filled with rare Pokémon!”\n"
 	.string "Safari Zone$"
 
+Route121_Text_Skitty:
+	.string "Skitty: Meenya?$"
+
+Route121_Nurse_Text_YouNeedHealing:
+	.string "I am a wandering\n"
+	.string "Pokémon Center employee.\p"
+	.string "Why don't I take care of your\n"
+	.string "Pokémon's ills in a flash?$"
+
+Route121_Nurse_Text_AllBetter:
+	.string "I took care of all that ailed\n"
+	.string "your Pokémon in a flash!$"
+
+Route121_Nurse_Text_GoodLuck:
+	.string "Okay then!\n"
+	.string "Good luck on your journey!$"

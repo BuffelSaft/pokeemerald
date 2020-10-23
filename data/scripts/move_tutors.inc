@@ -27,35 +27,6 @@ MoveTutor_EventScript_MetronomeTaught:: @ 82C8114
 	release
 	end
 
-FortreeCity_House2_EventScript_SleepTalkTutor:: @ 82C811E
-	lock
-	faceplayer
-	goto_if_set FLAG_MOVE_TUTOR_TAUGHT_SLEEP_TALK, MoveTutor_EventScript_SleepTalkTaught
-	msgbox MoveTutor_Text_SleepTalkTeach, MSGBOX_YESNO
-	compare VAR_RESULT, NO
-	goto_if_eq MoveTutor_EventScript_SleepTalkDeclined
-	call MoveTutor_EventScript_CanOnlyBeLearnedOnce
-	compare VAR_RESULT, NO
-	goto_if_eq MoveTutor_EventScript_SleepTalkDeclined
-	msgbox MoveTutor_Text_SleepTalkWhichMon, MSGBOX_DEFAULT
-	setvar VAR_0x8005, 0
-	call MoveTutor_EventScript_OpenPartyMenu
-	compare VAR_RESULT, 0
-	goto_if_eq MoveTutor_EventScript_SleepTalkDeclined
-	setflag FLAG_MOVE_TUTOR_TAUGHT_SLEEP_TALK
-	goto MoveTutor_EventScript_SleepTalkTaught
-	end
-
-MoveTutor_EventScript_SleepTalkDeclined:: @ 82C8172
-	msgbox MoveTutor_Text_SleepTalkDeclined, MSGBOX_DEFAULT
-	release
-	end
-
-MoveTutor_EventScript_SleepTalkTaught:: @ 82C817C
-	msgbox MoveTutor_Text_SleepTalkTaught, MSGBOX_DEFAULT
-	release
-	end
-
 LilycoveCity_DepartmentStoreRooftop_EventScript_SubstituteTutor:: @ 82C8186
 	lock
 	faceplayer

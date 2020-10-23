@@ -42,6 +42,58 @@ FortreeCity_House2_EventScript_WrongGuess:: @ 8217878
 	release
 	end
 
+FortreeCity_House2_EventScript_SleepTalkTM::
+	lock
+	faceplayer
+	checkitem ITEM_TM49_SLEEP_TALK, 1
+	compare VAR_RESULT, 1
+	goto_if_eq FortreeCity_House2_EventScript_ReceivedTM49
+	msgbox FortreeCity_House2_Text_WantSleepTalk, MSGBOX_YESNO
+	compare VAR_RESULT, NO
+	goto_if_eq FortreeCity_House2_EventScript_SleepTalkDeclined
+	msgbox FortreeCity_Text_GiveTM49, MSGBOX_DEFAULT
+	giveitem ITEM_TM49_SLEEP_TALK
+	msgbox FortreeCity_Text_HaveTM49, MSGBOX_DEFAULT
+	release
+	end
+
+FortreeCity_House2_EventScript_ReceivedTM49::
+	msgbox FortreeCity_Text_HaveTM49, MSGBOX_DEFAULT
+	release
+	end
+
+FortreeCity_House2_EventScript_SleepTalkDeclined::
+	msgbox FortreeCity_House2_Text_SleepTalkDeclined, MSGBOX_DEFAULT
+	release
+	end
+
+FortreeCity_House2_EventScript_SleepTalkTaught::
+	msgbox FortreeCity_Text_HaveTM49, MSGBOX_DEFAULT
+	release
+	end
+
+FortreeCity_House2_Text_WantSleepTalk:
+	.string "Humph! My wife relies on Hidden\n"
+	.string "Power to stay awake.\p"
+	.string "She should just take a nap like I do,\n"
+	.string "and Sleep Talk.\p"
+	.string "I can teach your Pokémon how to\n"
+	.string "Sleep Talk instead. Interested?$"
+
+FortreeCity_House2_Text_SleepTalkDeclined:
+	.string "Oh, fine, fine. You want to stay awake\n"
+	.string "with Hidden Power, too…$"
+
+FortreeCity_Text_GiveTM49:
+	.string "Ah, an appreciative child!\n"
+	.string "Please take this TM.$"
+
+FortreeCity_Text_HaveTM49:
+	.string "I've never once gotten my wife's\n"
+	.string "coin trick right.\p"
+	.string "I would be happy if I got it right\n"
+	.string "even as I Sleep Talk…$"
+
 FortreeCity_House2_Text_HiddenPowersArousedByNature: @ 8217882
 	.string "People… Pokémon…\p"
 	.string "Their hidden powers are aroused by\n"

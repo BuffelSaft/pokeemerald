@@ -308,8 +308,8 @@
       "movement_range_y": 0,
       "trainer_type": "TRAINER_TYPE_NONE",
       "trainer_sight_or_berry_tree_id": "0",
-      "script": "Route120_EventScript_ItemFullHeal",
-      "flag": "FLAG_ITEM_ROUTE_120_FULL_HEAL"
+      "script": "Route120_EventScript_ItemPidgeotite",
+      "flag": "FLAG_ITEM_ROUTE_120_PIDGEOTITE"
     },
     {
       "graphics_id": "OBJ_EVENT_GFX_BEAUTY",
@@ -828,8 +828,8 @@
       "x": 31,
       "y": 11,
       "elevation": 3,
-      "item": "ITEM_REVIVE",
-      "flag": "FLAG_HIDDEN_ITEM_ROUTE_120_REVIVE"
+      "item": "ITEM_TOXIC_PLATE",
+      "flag": "FLAG_HIDDEN_ITEM_ROUTE_120_TOXIC_PLATE"
     },
     {
       "type": "hidden_item",

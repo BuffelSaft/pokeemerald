@@ -194,8 +194,8 @@ Route120_EventScript_ItemNugget:: @ 8290F48
 	finditem ITEM_NUGGET
 	end
 
-Route120_EventScript_ItemFullHeal:: @ 8290F55
-	finditem ITEM_FULL_HEAL
+Route120_EventScript_ItemPidgeotite:: @ 8290F55
+	finditem ITEM_PIDGEOTITE
 	end
 
 Route120_EventScript_ItemHyperPotion:: @ 8290F62

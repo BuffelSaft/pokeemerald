@@ -20,7 +20,7 @@ FortreeCity_Gym_EventScript_Winona:: @ 82165C8
 	specialvar VAR_RESULT, ShouldTryRematchBattle
 	compare VAR_RESULT, TRUE
 	goto_if_eq FortreeCity_Gym_EventScript_WinonaRematch
-	goto_if_unset FLAG_RECEIVED_TM40, FortreeCity_Gym_EventScript_GiveAerialAce2
+	goto_if_unset FLAG_RECEIVED_TM51, FortreeCity_Gym_EventScript_GiveRoost2
 	msgbox FortreeCity_Gym_Text_WinonaPostBattle, MSGBOX_DEFAULT
 	release
 	end
@@ -34,7 +34,7 @@ FortreeCity_Gym_EventScript_WinonaDefeated:: @ 82165FD
 	setflag FLAG_BADGE06_GET
 	setvar VAR_0x8008, 6
 	call Common_EventScript_SetGymTrainers
-	call FortreeCity_Gym_EventScript_GiveAerialAce
+	call FortreeCity_Gym_EventScript_GiveRoost
 	closemessage
 	delay 30
 	playfanfare MUS_REGISTER_MATCH_CALL
@@ -48,21 +48,21 @@ FortreeCity_Gym_EventScript_WinonaDefeated:: @ 82165FD
 	release
 	end
 
-FortreeCity_Gym_EventScript_GiveAerialAce2:: @ 8216646
-	giveitem ITEM_TM40_AERIAL_ACE
+FortreeCity_Gym_EventScript_GiveRoost2:: @ 8216646
+	giveitem ITEM_TM51_ROOST
 	compare VAR_RESULT, FALSE
 	goto_if_eq Common_EventScript_ShowBagIsFull
-	msgbox FortreeCity_Gym_Text_ExplainAerialAce, MSGBOX_DEFAULT
-	setflag FLAG_RECEIVED_TM40
+	msgbox FortreeCity_Gym_Text_ExplainRoost, MSGBOX_DEFAULT
+	setflag FLAG_RECEIVED_TM51
 	release
 	end
 
-FortreeCity_Gym_EventScript_GiveAerialAce:: @ 821666A
-	giveitem ITEM_TM40_AERIAL_ACE
+FortreeCity_Gym_EventScript_GiveRoost:: @ 821666A
+	giveitem ITEM_TM51_ROOST
 	compare VAR_RESULT, FALSE
 	goto_if_eq Common_EventScript_BagIsFull
-	msgbox FortreeCity_Gym_Text_ExplainAerialAce, MSGBOX_DEFAULT
-	setflag FLAG_RECEIVED_TM40
+	msgbox FortreeCity_Gym_Text_ExplainRoost, MSGBOX_DEFAULT
+	setflag FLAG_RECEIVED_TM51
 	return
 
 FortreeCity_Gym_EventScript_WinonaRematch:: @ 821668D
@@ -104,7 +104,16 @@ FortreeCity_Gym_EventScript_GymGuide:: @ 8216732
 	lock
 	faceplayer
 	goto_if_set FLAG_DEFEATED_FORTREE_GYM, FortreeCity_Gym_EventScript_GymGuidePostVictory
+	goto_if_set FLAG_MOVE_FORTREE_GYM_ENERGY_ROOT, FortreeCity_GymGuide_2
 	msgbox FortreeCity_Gym_Text_GymGuideAdvice, MSGBOX_DEFAULT
+	giveitem ITEM_ENERGY_ROOT, 10
+	setflag FLAG_MOVE_FORTREE_GYM_ENERGY_ROOT
+	msgbox FortreeCity_Gym_Text_GymGuideAdvice2, MSGBOX_DEFAULT
+	release
+	end
+
+FortreeCity_GymGuide_2::
+	msgbox FortreeCity_Gym_Text_GymGuideAdvice2, MSGBOX_DEFAULT
 	release
 	end
 
@@ -138,6 +147,11 @@ FortreeCity_Gym_EventScript_GymStatue:: @ 821677B
 FortreeCity_Gym_Text_GymGuideAdvice: @ 8216785
 	.string "Yo, how's it going, Champion-\n"
 	.string "bound {PLAYER}?\p"
+	.string "Please, take these Energy Roots to\n"
+	.string "help with your challenge!$"
+
+
+FortreeCity_Gym_Text_GymGuideAdvice2:
 	.string "Fortree Gym Leader Winona is\n"
 	.string "a master of Flying-type Pokémon.\p"
 	.string "She's waiting at the back of this Gym,\n"
@@ -259,15 +273,18 @@ FortreeCity_Gym_Text_ExplainFeatherBadgeTakeThis: @ 8216F17
 	.string "to LV 80, even those received through\l"
 	.string "trades, will obey your every command.\p"
 	.string "You will also be able to use\n"
-	.string "the HM move FLY outside of battle.\p"
+	.string "the HM move Fly outside of battle.\p"
 	.string "And this…\n"
 	.string "This is a gift from me.$"
 
-FortreeCity_Gym_Text_ExplainAerialAce: @ 8216FEC
-	.string "TM40 contains Aerial Ace.\p"
-	.string "Its speed…\n"
-	.string "No Pokémon should be able to avoid it.\p"
-	.string "… … … … … …$"
+FortreeCity_Gym_Text_ExplainRoost: @ 8216FEC
+	.string "Roost…\p"
+	.string "With this move, the user can restore its\n"
+	.string "HP by up to half of its max HP by\l"
+	.string "landing on the ground and resting.\p"
+	.string "However, the user loses its Flying-type\n"
+	.string "designation during the turn, so be\l"
+	.string "cautious.$"
 
 FortreeCity_Gym_Text_RegisteredWinona: @ 8217044
 	.string "Registered Gym Leader Winona\n"

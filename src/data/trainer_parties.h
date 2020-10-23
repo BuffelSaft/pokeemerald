@@ -10672,7 +10672,7 @@ static const struct TrainerMonItemCustomMoves sParty_Jared[] = { // With Ashley
     .lvl = 0,
     .species = SPECIES_SWOOBAT,
     .heldItem = ITEM_SALAC_BERRY,
-    .ability = 1, // Simple
+    .ability = 2, // Simple
     .spread = SPREAD_31_IV_HP_SPEED_TIMID,
     .moves = MOVE_AIR_SLASH, MOVE_PSYSHOCK, MOVE_ENERGY_BALL, MOVE_NASTY_PLOT
     },
