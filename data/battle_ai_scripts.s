@@ -1882,7 +1882,7 @@ AI_CV_Heal2:
 	if_random_less_than 70, AI_CV_Heal5
 
 AI_CV_Heal3:
-	score -3
+	score -12 @ Don't try to heal if you have full HP
 	goto AI_CV_Heal_End
 
 AI_CV_Heal4:
@@ -1934,26 +1934,11 @@ AI_CV_Toxic_End:
 AI_CV_LightScreen:
 	call EncourageLightClay
 	if_hp_less_than AI_USER, 50, AI_CV_LightScreen_ScoreDown2
-	get_target_type1
-	if_in_bytes AI_CV_LightScreen_SpecialTypeList, AI_CV_LightScreen_End
-	get_target_type2
-	if_in_bytes AI_CV_LightScreen_SpecialTypeList, AI_CV_LightScreen_End
 	if_random_less_than 50, AI_CV_LightScreen_End
 AI_CV_LightScreen_ScoreDown2:
 	score -2
 AI_CV_LightScreen_End:
 	end
-
-AI_CV_LightScreen_SpecialTypeList:
-    .byte TYPE_FIRE
-    .byte TYPE_WATER
-    .byte TYPE_GRASS
-    .byte TYPE_ELECTRIC
-    .byte TYPE_PSYCHIC
-    .byte TYPE_ICE
-    .byte TYPE_DRAGON
-    .byte TYPE_DARK
-    .byte -1
 
 AI_CV_Rest:
 	if_target_faster AI_CV_Rest4
