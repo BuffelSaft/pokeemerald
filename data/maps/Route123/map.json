@@ -287,16 +287,16 @@
     },
     {
       "graphics_id": "OBJ_EVENT_GFX_ITEM_BALL",
-      "x": 31,
-      "y": 8,
+      "x": 57,
+      "y": 16,
       "elevation": 3,
       "movement_type": "MOVEMENT_TYPE_LOOK_AROUND",
       "movement_range_x": 0,
       "movement_range_y": 0,
       "trainer_type": "TRAINER_TYPE_NONE",
       "trainer_sight_or_berry_tree_id": "0",
-      "script": "Route123_EventScript_ItemCalcium",
-      "flag": "FLAG_ITEM_ROUTE_123_CALCIUM"
+      "script": "Route123_EventScript_ItemWideLens",
+      "flag": "FLAG_ITEM_ROUTE_123_WIDE_LENS"
     },
     {
       "graphics_id": "OBJ_EVENT_GFX_GIRL_3",
@@ -430,16 +430,16 @@
     },
     {
       "graphics_id": "OBJ_EVENT_GFX_ITEM_BALL",
-      "x": 27,
-      "y": 18,
+      "x": 31,
+      "y": 8,
       "elevation": 3,
       "movement_type": "MOVEMENT_TYPE_LOOK_AROUND",
       "movement_range_x": 1,
       "movement_range_y": 1,
       "trainer_type": "TRAINER_TYPE_NONE",
       "trainer_sight_or_berry_tree_id": "0",
-      "script": "Route123_EventScript_ItemUltraBall",
-      "flag": "FLAG_ITEM_ROUTE_123_ULTRA_BALL"
+      "script": "Route123_EventScript_ItemMeadowPlate",
+      "flag": "FLAG_ITEM_ROUTE_123_MEADOW_PLATE"
     },
     {
       "graphics_id": "OBJ_EVENT_GFX_ITEM_BALL",
@@ -573,16 +573,16 @@
     },
     {
       "graphics_id": "OBJ_EVENT_GFX_ITEM_BALL",
-      "x": 57,
-      "y": 16,
+      "x": 27,
+      "y": 18,
       "elevation": 3,
       "movement_type": "MOVEMENT_TYPE_LOOK_AROUND",
       "movement_range_x": 1,
       "movement_range_y": 1,
       "trainer_type": "TRAINER_TYPE_NONE",
       "trainer_sight_or_berry_tree_id": "0",
-      "script": "Route123_EventScript_ItemRevivalHerb",
-      "flag": "FLAG_ITEM_ROUTE_123_REVIVAL_HERB"
+      "script": "Route123_EventScript_ItemTM99DazzlingGleam",
+      "flag": "FLAG_ITEM_ROUTE_123_TM99_DAZZLING_GLEAM"
     }
   ],
   "warp_events": [
@@ -786,8 +786,8 @@
       "x": 75,
       "y": 1,
       "elevation": 3,
-      "item": "ITEM_SUPER_REPEL",
-      "flag": "FLAG_HIDDEN_ITEM_ROUTE_123_SUPER_REPEL"
+      "item": "ITEM_BLACK_SLUDGE",
+      "flag": "FLAG_HIDDEN_ITEM_ROUTE_123_BLACK_SLUDGE"
     },
     {
       "type": "sign",
@@ -809,8 +809,8 @@
       "x": 12,
       "y": 1,
       "elevation": 3,
-      "item": "ITEM_REVIVE",
-      "flag": "FLAG_HIDDEN_ITEM_ROUTE_123_REVIVE"
+      "item": "ITEM_FOCUS_SASH",
+      "flag": "FLAG_HIDDEN_ITEM_ROUTE_123_FOCUS_SASH"
     },
     {
       "type": "hidden_item",
@@ -825,8 +825,8 @@
       "x": 139,
       "y": 15,
       "elevation": 3,
-      "item": "ITEM_PP_UP",
-      "flag": "FLAG_HIDDEN_ITEM_ROUTE_123_PP_UP"
+      "item": "ITEM_PP_MAX",
+      "flag": "FLAG_HIDDEN_ITEM_ROUTE_123_PP_MAX"
     },
     {
       "type": "hidden_item",

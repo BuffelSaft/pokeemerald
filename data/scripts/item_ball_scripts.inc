@@ -222,12 +222,12 @@ Route121_EventScript_ItemZinc:: @ 8290FA3
 	finditem ITEM_ZINC
 	end
 
-Route123_EventScript_ItemCalcium:: @ 8290FB0
-	finditem ITEM_CALCIUM
+Route123_EventScript_ItemWideLens:: @ 8290FB0
+	finditem ITEM_WIDE_LENS
 	end
 
-Route123_EventScript_ItemUltraBall:: @ 8290FBD
-	finditem ITEM_ULTRA_BALL
+Route123_EventScript_ItemMeadowPlate:: @ 8290FBD
+	finditem ITEM_MEADOW_PLATE
 	end
 
 Route123_EventScript_ItemElixir:: @ 8290FCA
@@ -238,8 +238,8 @@ Route123_EventScript_ItemPPUp:: @ 8290FD7
 	finditem ITEM_PP_UP
 	end
 
-Route123_EventScript_ItemRevivalHerb:: @ 8290FE4
-	finditem ITEM_REVIVAL_HERB
+Route123_EventScript_ItemTM99DazzlingGleam:: @ 8290FE4
+	finditem ITEM_TM99_DAZZLING_GLEAM
 	end
 
 Route124_EventScript_ItemRedShard:: @ 8290FF1
