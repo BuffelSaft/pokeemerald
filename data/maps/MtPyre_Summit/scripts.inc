@@ -450,13 +450,37 @@ MtPyre_Summit_EventScript_Grunt4:: @ 8232442
 	msgbox MtPyre_Summit_Text_Grunt4PostBattle, MSGBOX_AUTOCLOSE
 	end
 
+MtPyre_Summit_EventScript_Matt::
+	trainerbattle_single TRAINER_MATT_MT_PYRE, MtPyre_Summit_Text_MattIntro, MtPyre_Summit_Text_MattDefeat
+	msgbox MtPyre_Summit_Text_MattPostBattle, MSGBOX_AUTOCLOSE
+	end
+
+MtPyre_Summit_Text_MattIntro:
+	.string "Hehehe!\n"
+	.string "You must be the infamous {PLAYER}!\p"
+	.string "Come to mess with us here too,\n"
+	.string "have you?\p"
+	.string "Well, tough luck!\p"
+	.string "I'm a cut above the Grunts you've seen\n"
+	.string "so far.\p"
+	.string "You're not getting past me!$"
+
+MtPyre_Summit_Text_MattDefeat:
+	.string "Hehehe…\n"
+	.string "Guess I'll let you pass after all…$"
+
+MtPyre_Summit_Text_MattPostBattle:
+	.string "Hehehe…\n"
+	.string "You're strong, {PLAYER}, but too slow!\p"
+	.string "We've already got what we came for.$"
+
 MtPyre_Summit_Text_Grunt1Intro: @ 8232459
 	.string "No! Those Team Magma goons got\n"
 	.string "here ahead of us!\p"
 	.string "We can't fall behind!$"
 
 MtPyre_Summit_Text_Grunt1Defeat: @ 82324A0
-	.string "I thought you were one of the MAGMAS\n"
+	.string "I thought you were one of the Magmas\n"
 	.string "who happened to come back…$"
 
 MtPyre_Summit_Text_Grunt1PostBattle: @ 82324E0
@@ -482,7 +506,7 @@ MtPyre_Summit_Text_Grunt2PostBattle: @ 82325E4
 MtPyre_Summit_Text_Grunt3Intro: @ 823261D
 	.string "You…\n"
 	.string "We saw you at Mt. Chimney.\p"
-	.string "You don't belong to either TEAM,\n"
+	.string "You don't belong to either Team,\n"
 	.string "so why would you be here?$"
 
 MtPyre_Summit_Text_Grunt3Defeat: @ 8232678
@@ -513,7 +537,7 @@ MtPyre_Summit_Text_Grunt4PostBattle: @ 82327D8
 MtPyre_Summit_Text_ArchieWeGotTheOrbLetsGo: @ 823281A
 	.string "Archie: Team Magma's Maxie got ahead\n"
 	.string "of us, but we also got what we wanted.\p"
-	.string "The Red Orb preserved at Mt. Pyre…\n"
+	.string "The Blue Orb preserved at Mt. Pyre…\n"
 	.string "I, Archie, now have it in my possession!\p"
 	.string "Fufufu… Now we can bring our ultimate\n"
 	.string "objective to fruition!\p"

@@ -4633,18 +4633,18 @@ const struct Trainer gTrainers[] = {
         .party = {.ItemCustomMoves = sParty_Calvin4},
     },
 
-    [TRAINER_CALVIN_5] =
+    [TRAINER_MATT_MT_PYRE] =
     {
         .partyFlags = F_TRAINER_PARTY_HELD_ITEM | F_TRAINER_PARTY_CUSTOM_MOVESET,
-        .trainerClass = TRAINER_CLASS_YOUNGSTER,
-        .encounterMusic_gender = TRAINER_ENCOUNTER_MUSIC_MALE,
-        .trainerPic = TRAINER_PIC_YOUNGSTER,
-        .trainerName = _("Calvin"),
+        .trainerClass = TRAINER_CLASS_AQUA_ADMIN,
+        .encounterMusic_gender = TRAINER_ENCOUNTER_MUSIC_AQUA,
+        .trainerPic = TRAINER_PIC_AQUA_ADMIN_M,
+        .trainerName = _("Matt"),
         .items = {},
         .doubleBattle = FALSE,
         .aiFlags = AI_SCRIPT_CHECK_BAD_MOVE | AI_SCRIPT_TRY_TO_FAINT | AI_SCRIPT_CHECK_VIABILITY,
-        .partySize = ARRAY_COUNT(sParty_Calvin5),
-        .party = {.ItemCustomMoves = sParty_Calvin5},
+        .partySize = ARRAY_COUNT(sParty_MattMtPyre),
+        .party = {.ItemCustomMoves = sParty_MattMtPyre},
     },
 
     [TRAINER_EDDIE] =

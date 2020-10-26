@@ -332,7 +332,7 @@
 #define TRAINER_CALVIN_2                    328
 #define TRAINER_CALVIN_3                    329
 #define TRAINER_CALVIN_4                    330
-#define TRAINER_CALVIN_5                    331
+#define TRAINER_MATT_MT_PYRE                331
 #define TRAINER_EDDIE                       332
 #define TRAINER_ALLEN                       333
 #define TRAINER_TIMMY                       334
